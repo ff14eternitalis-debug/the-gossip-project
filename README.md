@@ -199,6 +199,6 @@ Detailed technical documentation is available in the [`docs/`](docs/) folder:
 
 This project is for educational use within The Hacking Project. Feel free to modify or improve it in your own fork.
 
-Morgan, Romain & Valentin
+Morgan, Romain
 
 _The Hacking Project 2026_
