@@ -1,0 +1,37 @@
+# Bundle
+/.bundle
+
+# Environment
+/.env*
+
+# Logs
+/log/*
+!/log/.keep
+
+# Temp
+/tmp/*
+!/tmp/.keep
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Storage
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
+
+# Assets
+/public/assets
+
+# Credentials & keys
+/config/*.key
+/config/credentials/*.key
+
+# SQLite databases
+/storage/*.sqlite3
+
+# IDE
+.cursor
+.vscode
