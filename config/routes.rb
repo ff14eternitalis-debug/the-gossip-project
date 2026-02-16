@@ -10,16 +10,16 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Page d'accueil
-  root 'gossips#index'
+  root "gossips#index"
 
   # Gossips
-  resources :gossips, only: [:index, :show]
+  resources :gossips, only: [ :index, :show ]
 
   # Users
-  resources :users, only: [:show]
+  resources :users, only: [ :show ]
 
   # Pages statiques
-  get '/team', to: 'static_pages#team'
-  get '/contact', to: 'static_pages#contact'
-  get '/welcome/:first_name', to: 'static_pages#welcome', as: 'welcome'
+  get "/team", to: "static_pages#team"
+  get "/contact", to: "static_pages#contact"
+  get "/welcome/:first_name", to: "static_pages#welcome", as: "welcome"
 end
