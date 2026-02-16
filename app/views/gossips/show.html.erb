@@ -1,0 +1,17 @@
+<div class="container mt-5">
+  <h1><%= @gossip.title %></h1>
+
+  <p class="text-muted">
+    Par <%= link_to @gossip.user.first_name, user_path(@gossip.user) %> — <%= @gossip.created_at.strftime("%d/%m/%Y a %Hh%M") %>
+  </p>
+
+  <div class="card mt-4">
+    <div class="card-body">
+      <p><%= @gossip.content %></p>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to "Retour aux potins", root_path, class: "btn btn-outline-secondary" %>
+  </div>
+</div>
