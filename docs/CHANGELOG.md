@@ -2,6 +2,17 @@
 
 Toutes les modifications notables du projet sont documentees dans ce fichier.
 
+## [0.2.1] - 2026-02-16
+
+### Ajoute
+
+- **Analyse du projet** : fichier `docs/SUGGESTIONS.md` avec toutes les pistes d'amelioration identifiees
+  - 6 fonctionnalites manquantes prioritaires (auth, CRUD, commentaires, likes, tags, messagerie)
+  - 4 ameliorations techniques (validations, tests, gestion erreurs, pagination)
+  - 5 ameliorations UX/UI (formulaires, flash messages, avatars, recherche)
+  - 7 fonctionnalites avancees (Turbo/Stimulus, API JSON, notifications, follow, admin, mailers, images)
+  - Tableau de priorite avec niveaux de complexite
+
 ## [0.2.0] - 2026-02-16
 
 ### Ajoute
