@@ -43,10 +43,27 @@
             <li class="nav-item">
               <%= link_to "Contact", contact_path, class: "nav-link" %>
             </li>
+            <% if user_signed_in? %>
+              <li class="nav-item">
+                <%= link_to "Mon compte", user_path(current_user), class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= button_to "Deconnexion", destroy_user_session_path, method: :delete, class: "nav-link btn btn-link border-0" %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "Connexion", new_user_session_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Inscription", new_user_registration_path, class: "nav-link" %>
+              </li>
+            <% end %>
           </ul>
         </div>
       </div>
     </nav>
+
+    <%= render "shared/flash_messages" %>
 
     <%= yield %>
 

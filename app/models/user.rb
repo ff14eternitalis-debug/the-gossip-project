@@ -1,5 +1,11 @@
 class User < ApplicationRecord
-  belongs_to :city
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  validates :email, uniqueness: true
+  validates :age, numericality: { greater_than: 0 }, allow_nil: true
+
+  belongs_to :city, optional: true
   has_many :gossips
   has_many :comments
   has_many :likes

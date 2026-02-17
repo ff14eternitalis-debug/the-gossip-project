@@ -37,7 +37,7 @@ puts "10 utilisateurs créés."
 # --- GOSSIPS ---
 20.times do
   Gossip.create!(
-    title: Faker::Lorem.sentence(word_count: 3),
+    title: Faker::Lorem.words(3).join(" ")[0, 14],
     content: Faker::Lorem.paragraph(sentence_count: 4),
     user: User.all.sample
   )
@@ -45,9 +45,8 @@ end
 puts "20 gossips créés."
 
 # --- TAGS ---
-10.times do
-  Tag.create!(title: "##{Faker::Lorem.word}")
-end
+tag_titles = 20.times.map { "##{Faker::Lorem.word}" }.uniq.first(10)
+tag_titles.each { |title| Tag.create!(title: title) }
 puts "10 tags créés."
 
 # --- LIEN GOSSIP / TAG (chaque gossip a au moins un tag) ---

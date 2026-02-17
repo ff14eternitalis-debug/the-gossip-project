@@ -2,6 +2,12 @@
   <h1>Bienvenue sur The Gossip Project</h1>
   <p class="lead">Decouvrez les derniers potins !</p>
 
+  <% if user_signed_in? %>
+    <div class="mb-3">
+      <%= link_to "Nouveau potin", new_gossip_path, class: "btn btn-success" %>
+    </div>
+  <% end %>
+
   <div class="row mt-4">
     <% @gossips.each do |gossip| %>
       <div class="col-md-4 mb-4">
@@ -9,6 +15,12 @@
           <div class="card-body">
             <h5 class="card-title"><%= gossip.title %></h5>
             <p class="card-text text-muted">Par <%= gossip.user.first_name %></p>
+            <p class="card-text small text-muted"><%= gossip.comments.size %> commentaire<%= "s" if gossip.comments.size != 1 %> — <%= gossip.likes.size %> like<%= "s" if gossip.likes.size != 1 %></p>
+            <% if gossip.tags.any? %>
+              <p class="card-text small">
+                <% gossip.tags.each do |tag| %><%= link_to tag.title, tag_path(tag), class: "badge bg-secondary text-decoration-none" %> <% end %>
+              </p>
+            <% end %>
           </div>
           <div class="card-footer">
             <%= link_to "Voir plus", gossip_path(gossip), class: "btn btn-primary btn-sm" %>

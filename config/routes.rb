@@ -12,8 +12,22 @@ Rails.application.routes.draw do
   # Page d'accueil
   root "gossips#index"
 
-  # Gossips
-  resources :gossips, only: [ :index, :show ]
+  devise_for :users
+
+  # Gossips + commentaires (create nested)
+  resources :gossips do
+    resources :comments, only: [ :create ]
+  end
+  resources :comments, only: [ :edit, :update, :destroy ]
+
+  # Cities
+  resources :cities, only: [ :show ]
+
+  # Tags
+  resources :tags, only: [ :show ]
+
+  # Likes (polymorphique)
+  resources :likes, only: [ :create, :destroy ]
 
   # Users
   resources :users, only: [ :show ]

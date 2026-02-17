@@ -1,26 +1,29 @@
 # The Gossip Project (Rails Edition)
 
-![Ruby](https://img.shields.io/badge/Ruby-3.4.2-red) ![Rails](https://img.shields.io/badge/Rails-8.1.2-red) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.3-purple) ![Gems](https://img.shields.io/badge/Gems-Faker-blue)
+[![CI](https://github.com/ff14eternitalis-debug/the-gossip-project/actions/workflows/ci.yml/badge.svg)](https://github.com/ff14eternitalis-debug/the-gossip-project/actions/workflows/ci.yml) [![Dependabot Updates](https://github.com/ff14eternitalis-debug/the-gossip-project/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/ff14eternitalis-debug/the-gossip-project/actions/workflows/dependabot/dependabot-updates) ![Ruby](https://img.shields.io/badge/Ruby-3.4.2-red) ![Rails](https://img.shields.io/badge/Rails-8.1.2-red) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.3-purple) ![Gems](https://img.shields.io/badge/Gems-Faker-blue)
 
 Welcome to **The Gossip Project**, a full-stack Rails application created as part of **The Hacking Project (THP)** bootcamp.
 The goal of this project is to master **ActiveRecord**, complex database relationships (1-N, N-N, and polymorphic associations), **controllers**, **views** and **Bootstrap** by building a social network where users post gossips, tag them, comment (including comment-on-comment), like, and send private messages.
 
 ## Features
 
-- **Home page** displaying all gossips in Bootstrap cards with author and link to details
-- **Gossip detail page** with title, content, author (clickable link to profile) and creation date
-- **User profile page** with personal info, city and list of their gossips
-- **Team page** presenting the project team
-- **Contact page** with contact information
-- **Personalized welcome page** via dynamic URL (`/welcome/:first_name`)
-- **Dark theme** with Bootstrap 5.3 native dark mode
-- **Responsive navbar** with links to all main pages
+- **Authentication** (Devise): sign up, sign in, sign out. Navbar shows different links when logged in (Mon compte, Déconnexion) or out (Connexion, Inscription).
+- **Home page** (`/`): all gossips in Bootstrap cards with author, comment count, like count, tags; link "Nouveau potin" when logged in.
+- **Gossip CRUD**: create, read, update, delete gossips. Only the author can edit or delete. Forms use Bootstrap; tags can be selected (multiple) on create/edit.
+- **Gossip detail page** (`/gossips/:id`): title, content, author (link to profile), city link, tags, like/unlike button and count; list of comments with author and date; form to add a comment (when logged in); edit/delete comment (author only).
+- **City page** (`/cities/:id`): city name, list of gossips from users in that city. Linked from user profile and gossip detail when the author has a city.
+- **User profile page** (`/users/:id`): personal info, city (linked if present), list of their gossips.
+- **Tags**: select multiple tags when creating or editing a gossip; tags displayed on gossip show and index; page per tag (`/tags/:id`) listing all gossips with that tag.
+- **Likes**: like/unlike on gossips and on comments (when logged in); like counts on gossip show and on the home page cards.
+- **Team page** (`/team`) and **Contact page** (`/contact`).
+- **Personalized welcome page** (`/welcome/:first_name`).
+- **Dark theme** with Bootstrap 5.3 native dark mode and responsive navbar.
 
 ## Prerequisites
 
 - **Ruby** (version 3.4.2)
 - **Rails** (version 8.1.x)
-- **Gems**: `faker` (for generating seed data)
+- **Gems**: `devise` (authentication), `faker` (seed data)
 
 ## Database Architecture
 
@@ -66,13 +69,29 @@ Rails automatically adds `id` (PK) and `created_at` / `updated_at` to each table
 ## Routes
 
 | Method | URI | Controller#Action | Description |
-|---|---|---|---|
-| GET | `/` | `gossips#index` | Home page — list of all gossips |
-| GET | `/gossips/:id` | `gossips#show` | Gossip detail page |
-| GET | `/users/:id` | `users#show` | User profile page |
+|--------|-----|-------------------|-------------|
+| GET | `/` | `gossips#index` | Home — all gossips (cards with comment/like count, tags) |
+| GET | `/gossips` | `gossips#index` | Same as root |
+| GET | `/gossips/new` | `gossips#new` | New gossip form (auth required) |
+| POST | `/gossips` | `gossips#create` | Create gossip (auth required) |
+| GET | `/gossips/:id` | `gossips#show` | Gossip detail (comments, like/unlike, tags) |
+| GET | `/gossips/:id/edit` | `gossips#edit` | Edit gossip form (author only) |
+| PATCH/PUT | `/gossips/:id` | `gossips#update` | Update gossip (author only) |
+| DELETE | `/gossips/:id` | `gossips#destroy` | Delete gossip (author only) |
+| POST | `/gossips/:gossip_id/comments` | `comments#create` | Add comment (auth required) |
+| GET | `/comments/:id/edit` | `comments#edit` | Edit comment (author only) |
+| PATCH | `/comments/:id` | `comments#update` | Update comment (author only) |
+| DELETE | `/comments/:id` | `comments#destroy` | Delete comment (author only) |
+| GET | `/cities/:id` | `cities#show` | City page — gossips from users in that city |
+| GET | `/tags/:id` | `tags#show` | Tag page — gossips with that tag |
+| POST | `/likes` | `likes#create` | Like a gossip or comment (auth required) |
+| DELETE | `/likes/:id` | `likes#destroy` | Remove like (auth required) |
+| GET | `/users/:id` | `users#show` | User profile |
 | GET | `/team` | `static_pages#team` | Team presentation |
 | GET | `/contact` | `static_pages#contact` | Contact page |
 | GET | `/welcome/:first_name` | `static_pages#welcome` | Personalized landing page |
+
+Devise routes: `/users/sign_in`, `/users/sign_up`, `/users/sign_out`, etc.
 
 ## Installation
 
@@ -116,12 +135,14 @@ Rails automatically adds `id` (PK) and `created_at` / `updated_at` to each table
 
 ### Web Interface
 
-- **Home** (`/`): Browse all gossips displayed as Bootstrap cards. Click "Voir plus" to see details.
-- **Gossip detail** (`/gossips/:id`): View full gossip with author link and creation date.
-- **User profile** (`/users/:id`): View user info and their gossips. Accessible by clicking on an author name.
-- **Team** (`/team`): Meet the team behind the project.
-- **Contact** (`/contact`): Find our contact information.
-- **Welcome** (`/welcome/YourName`): Get a personalized welcome message.
+- **Home** (`/`): Browse all gossips (cards show title, author, comment count, like count, tags). Click "Voir plus" for the full gossip. Logged-in users see "Nouveau potin".
+- **Gossip detail** (`/gossips/:id`): Full content, author (link to profile), city link, tags, like/unlike and count. Comments list with edit/delete for the author; form to add a comment when logged in. Author sees "Modifier" and "Supprimer" for the gossip.
+- **User profile** (`/users/:id`): User info, city (if set), list of their gossips. Reach it by clicking an author name.
+- **City** (`/cities/:id`): All gossips from users in that city. Linked from profile and gossip when the author has a city.
+- **Tag** (`/tags/:id`): All gossips that have this tag. Tags on gossips are clickable.
+- **Team** (`/team`) and **Contact** (`/contact`).
+- **Welcome** (`/welcome/YourName`): Personalized welcome message.
+- **Auth**: Sign up, sign in, sign out via navbar. Required to create/edit/delete gossips, comment, and like.
 
 ### Rails Console
 
@@ -172,10 +193,11 @@ User.first.likes
 
 ### 4. Controllers & Views
 
-- RESTful controllers (`GossipsController`, `UsersController`) with `index` and `show` actions.
-- Static pages controller for non-resource pages (`team`, `contact`, `welcome`).
-- Dynamic URL parameters with `params[:first_name]` for personalized landing pages.
-- Using `link_to` helpers with named routes (`gossip_path`, `user_path`, `root_path`).
+- RESTful controllers: `GossipsController` (full CRUD), `CommentsController` (create nested under gossip, edit/update/destroy shallow), `CitiesController`, `TagsController`, `LikesController` (polymorphic create/destroy), `UsersController` (show). Static pages: `team`, `contact`, `welcome`.
+- Devise for authentication: `authenticate_user!` and author checks (`current_user == @gossip.user` or `@comment.user`).
+- Nested and shallow routes: `resources :gossips do resources :comments, only: [:create] end` and `resources :comments, only: [:edit, :update, :destroy]`.
+- Strong parameters and authorization (only author can edit/delete gossip or comment).
+- Helpers: `link_to`, `button_to`, `form_with`, named routes (`gossip_path`, city_path, tag_path, like_path, etc.).
 
 ### 5. Bootstrap Integration
 
@@ -186,9 +208,15 @@ User.first.likes
 
 ## Documentation
 
-Detailed technical documentation is available in the [`docs/`](docs/) folder:
-- [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md) — Full technical documentation
-- [`docs/CHANGELOG.md`](docs/CHANGELOG.md) — Version history
+- [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md) — Documentation technique
+- [`docs/DEPLOI_HEROKU_POSTGRESQL.md`](docs/DEPLOI_HEROKU_POSTGRESQL.md) — Mise en ligne Heroku, PostgreSQL, accès réservé aux utilisateurs connectés
+- [`CHANGELOG.md`](CHANGELOG.md) — Historique des versions
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — Guide pour contribuer
+- [`CONTRIBUTORS.md`](CONTRIBUTORS.md) — Contributeurs du projet
+
+### Icons
+
+Favicon and app icon: [`public/icon.svg`](public/icon.svg) (used in the layout). The PWA manifest references `public/icon.png` (512×512). To generate it from the SVG (e.g. with ImageMagick): `convert -background none -resize 512x512 public/icon.svg public/icon.png`. Without `icon.png`, only the SVG favicon is used; PNG is needed for installable PWA icons.
 
 ## Related projects (THP BDD)
 
@@ -197,8 +225,8 @@ Detailed technical documentation is available in the [`docs/`](docs/) folder:
 
 ## Authors
 
-This project is for educational use within The Hacking Project. Feel free to modify or improve it in your own fork.
+Projet à visée pédagogique (The Hacking Project). Voir [CONTRIBUTORS.md](CONTRIBUTORS.md) pour la liste des contributeurs.
 
-Morgan, Romain
+[Morgan](https://github.com/DevRedious), [Romain](https://github.com/ff14eternitalis-debug)
 
 _The Hacking Project 2026_

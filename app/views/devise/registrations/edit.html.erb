@@ -1,0 +1,31 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <h2>Modifier mon compte</h2>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "mt-3" }) do |f| %>
+        <div class="mb-3">
+          <%= f.label :email, class: "form-label" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :password, "Nouveau mot de passe", class: "form-label" %>
+          <em class="text-muted">(laisser vide si inchangé)</em>
+          <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :password_confirmation, "Confirmation", class: "form-label" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :current_password, "Mot de passe actuel", class: "form-label" %>
+          <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.submit "Mettre à jour", class: "btn btn-primary w-100" %>
+        </div>
+      <% end %>
+      <%= link_to "Retour", :back, class: "btn btn-link" %>
+    </div>
+  </div>
+</div>

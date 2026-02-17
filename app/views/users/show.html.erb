@@ -6,7 +6,7 @@
       <ul class="list-unstyled">
         <li><strong>Email :</strong> <%= @user.email %></li>
         <li><strong>Age :</strong> <%= @user.age %> ans</li>
-        <li><strong>Ville :</strong> <%= @user.city.name %></li>
+        <li><strong>Ville :</strong> <%= @user.city ? link_to(@user.city.name, city_path(@user.city)) : "—" %></li>
         <li><strong>Description :</strong> <%= @user.description %></li>
       </ul>
     </div>
