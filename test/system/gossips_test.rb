@@ -22,9 +22,9 @@ class GossipsTest < ApplicationSystemTestCase
     sign_in @alice
     visit new_gossip_url
 
-    fill_in "Title", with: "MyGossip"
-    fill_in "Content", with: "This is a test gossip content."
-    click_on "Publier"
+    fill_in "Titre (3 à 14 caractères)", with: "MyGossip"
+    fill_in "Contenu", with: "This is a test gossip content."
+    click_on "Create Gossip"
 
     assert_text "Potin créé avec succès"
   end

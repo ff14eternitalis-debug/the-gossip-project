@@ -2,6 +2,35 @@
 
 Toutes les modifications notables du projet sont documentees dans ce fichier.
 
+## [1.0.0] - 2026-02-17
+
+### Ajoute
+
+- **Phase 6 — Pagination et accueil** : gem `pagy ~> 9.0` (9 items/page, style Bootstrap), troncature du contenu (120 car.), date de publication sur les cards, eager loading (`includes`) pour eviter les requetes N+1
+- **Phase 7 — Messagerie privee** : `ConversationsController` (index, show, new, create), inbox avec liste des messages envoyes/recus, vue message avec bouton Repondre, formulaire avec select multiple destinataires, validation `content` sur PrivateMessage, autorisation (expediteur + destinataires), lien Messagerie dans la navbar, bouton "Envoyer un message" sur le profil utilisateur
+- **Phase 8 — Tests** : 9 fichiers fixtures, 7 fichiers tests modeles (City, User, Gossip, Tag, Comment, Like, PrivateMessage), 5 fichiers tests controllers (Gossips, Comments, Likes, Conversations, Search), 1 test systeme Capybara (index, show, create gossip) — 82 tests, 123 assertions, 0 failures
+- **Phase 9 — Avatars** : Active Storage (`has_one_attached :avatar` sur User), upload dans inscription/edition Devise, `configure_permitted_parameters` dans ApplicationController, helper `user_avatar(user, size:)` avec fallback initiales (pastille Bootstrap), affichage sur profil (64px), index gossips (20px), show gossip (28px), commentaires (22px)
+- **Phase 9 — Recherche** : `SearchController#index` avec recherche LIKE multi-modele (gossips par titre/contenu, users par nom/email, tags par titre), page `/search` avec resultats par section, barre de recherche dans la navbar
+- **Phase 10.1 — Turbo / Stimulus** : Turbo Frame wrappant la section commentaires (rechargement partiel sans full page reload), Stimulus controller `flash` pour auto-dismiss des alertes apres 3 secondes
+- **Phase 10.2 — API JSON** : namespace `/api/v1/`, `Api::V1::BaseController` heritant de `ActionController::API`, endpoints gossips (index + show avec commentaires) et users (index + show avec gossips)
+- **Phase 10.3 — Notifications** : table `notifications` (polymorphique, `read` default false), callbacks `after_create_commit` sur Comment, Like et Follow, `NotificationsController` avec marquage lu automatique, page `/notifications` avec affichage par type, badge compteur non-lus dans la navbar
+- **Phase 10.4 — Follow / Fil d'actualite** : table `follows` avec index unique + FK vers users, modele Follow avec validation anti-self-follow, `FollowsController` (create/destroy), bouton Follow/Unfollow sur profil utilisateur, compteurs abonnes/abonnements, `FeedController` avec pagination pagy, page `/feed` (potins des utilisateurs suivis), lien "Mon fil" dans la navbar
+- **Phase 10.5 — Admin** : colonne `admin` (boolean, default false) sur users, `Admin::BaseController` avec guard `require_admin!`, `Admin::DashboardController` avec stats (users, gossips, commentaires) et derniers enregistrements, page `/admin`, lien Admin dans la navbar (visible admin uniquement)
+- **Phase 10.6 — Mailers** : `UserMailer` avec email de bienvenue (`after_create_commit :send_welcome_email`, `deliver_later`) et notification nouveau commentaire, vues HTML dans `app/views/user_mailer/`
+- **Phase 10.7 — Images sur gossips** : `has_one_attached :image` sur Gossip, champ file upload dans le formulaire `_form.html.erb` avec preview, affichage sur la page show gossip, `:image` dans strong params
+
+### Corrige
+
+- **Gossip#join_table_gossip_tags** : ajout `dependent: :destroy` pour corriger une erreur FK constraint lors de la suppression d'un gossip ayant des tags
+
+### Modifie
+
+- **Rubocop** : 83 fichiers, 0 offenses
+- **Brakeman** : 0 warnings de securite
+- **CI** : GitHub Actions deja configuree (scan_ruby, scan_js, lint, test, system-test)
+- Suppression du `hello_controller.js` par defaut de Stimulus
+- Formulaire commentaire passe de `local: true` a Turbo-compatible (suppression du `local: true`)
+
 ## [0.5.0] - 2026-02-16
 
 ### Ajoute
