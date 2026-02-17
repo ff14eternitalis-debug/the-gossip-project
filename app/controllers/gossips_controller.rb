@@ -4,7 +4,9 @@ class GossipsController < ApplicationController
   before_action :authorize_gossip!, only: [ :edit, :update, :destroy ]
 
   def index
-    @gossips = Gossip.order(created_at: :desc)
+    @pagy, @gossips = pagy(
+      Gossip.includes(:user, :tags, :comments, :likes).order(created_at: :desc)
+    )
   end
 
   def show
@@ -55,6 +57,6 @@ class GossipsController < ApplicationController
   end
 
   def gossip_params
-    params.require(:gossip).permit(:title, :content, tag_ids: [])
+    params.require(:gossip).permit(:title, :content, :image, tag_ids: [])
   end
 end

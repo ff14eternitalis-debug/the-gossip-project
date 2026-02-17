@@ -1,7 +1,8 @@
 <div class="container mt-5">
   <h1><%= @gossip.title %></h1>
 
-  <p class="text-muted">
+  <p class="text-muted d-flex align-items-center gap-2">
+    <%= user_avatar(@gossip.user, size: 28) %>
     Par <%= link_to @gossip.user.first_name, user_path(@gossip.user) %>
     <% if @gossip.user.city %>
       — Ville : <%= link_to @gossip.user.city.name, city_path(@gossip.user.city) %>
@@ -18,6 +19,11 @@
 
   <div class="card mt-4">
     <div class="card-body">
+      <% if @gossip.image.attached? %>
+        <div class="mb-3">
+          <%= image_tag @gossip.image, class: "img-fluid rounded", style: "max-height: 400px; object-fit: cover" %>
+        </div>
+      <% end %>
       <p><%= @gossip.content %></p>
       <p class="text-muted small mb-0">
         <%= @gossip.likes.size %> like<%= "s" if @gossip.likes.size != 1 %>
@@ -40,57 +46,60 @@
     </div>
   </div>
 
-  <section class="mt-5">
-    <h3>Commentaires</h3>
+  <%= turbo_frame_tag "comments" do %>
+    <section class="mt-5">
+      <h3>Commentaires</h3>
 
-    <% @gossip.comments.each do |comment| %>
-      <div class="card mb-2">
-        <div class="card-body py-2">
-          <p class="mb-1">
-            <strong><%= link_to comment.user.first_name, user_path(comment.user) %></strong>
-            — <%= comment.created_at.strftime("%d/%m/%Y %Hh%M") %>
-          </p>
-          <p class="mb-1"><%= comment.content %></p>
-          <span class="small text-muted"><%= comment.likes.size %> like<%= "s" if comment.likes.size != 1 %></span>
-          <% if user_signed_in? %>
-            <% clike = comment.likes.find_by(user: current_user) %>
-            <% if clike %>
-              <%= button_to "Unlike", like_path(clike), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" %>
-            <% else %>
-              <%= button_to "Like", likes_path(likeable_type: "Comment", likeable_id: comment.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" %>
+      <% @gossip.comments.each do |comment| %>
+        <div class="card mb-2">
+          <div class="card-body py-2">
+            <p class="mb-1 d-flex align-items-center gap-1">
+              <%= user_avatar(comment.user, size: 22) %>
+              <strong><%= link_to comment.user.first_name, user_path(comment.user) %></strong>
+              — <%= comment.created_at.strftime("%d/%m/%Y %Hh%M") %>
+            </p>
+            <p class="mb-1"><%= comment.content %></p>
+            <span class="small text-muted"><%= comment.likes.size %> like<%= "s" if comment.likes.size != 1 %></span>
+            <% if user_signed_in? %>
+              <% clike = comment.likes.find_by(user: current_user) %>
+              <% if clike %>
+                <%= button_to "Unlike", like_path(clike), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" %>
+              <% else %>
+                <%= button_to "Like", likes_path(likeable_type: "Comment", likeable_id: comment.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" %>
+              <% end %>
             <% end %>
-          <% end %>
-          <% if user_signed_in? && current_user == comment.user %>
-            <div class="mt-1">
-              <%= link_to "Modifier", edit_comment_path(comment), class: "btn btn-outline-primary btn-sm" %>
-              <%= button_to "Supprimer", comment_path(comment), method: :delete, data: { turbo_confirm: "Supprimer ce commentaire ?" }, form: { class: "d-inline" }, class: "btn btn-outline-danger btn-sm" %>
-            </div>
-          <% end %>
+            <% if user_signed_in? && current_user == comment.user %>
+              <div class="mt-1">
+                <%= link_to "Modifier", edit_comment_path(comment), class: "btn btn-outline-primary btn-sm" %>
+                <%= button_to "Supprimer", comment_path(comment), method: :delete, data: { turbo_confirm: "Supprimer ce commentaire ?" }, form: { class: "d-inline" }, class: "btn btn-outline-danger btn-sm" %>
+              </div>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
 
-    <% if user_signed_in? %>
-      <div class="card mt-3">
-        <div class="card-body">
-          <h5 class="card-title">Ajouter un commentaire</h5>
-          <% comment_for_form = defined?(@comment) && @comment ? @comment : Comment.new %>
-          <% if comment_for_form.errors.any? %>
-            <div class="alert alert-danger mb-2" role="alert">
-              <%= comment_for_form.errors.full_messages.join(", ") %>
-            </div>
-          <% end %>
-          <%= form_with model: [ @gossip, comment_for_form ], url: gossip_comments_path(@gossip), local: true do |f| %>
-            <div class="mb-2">
-              <%= f.label :content, "Votre commentaire", class: "form-label" %>
-              <%= f.text_area :content, class: "form-control", rows: 3 %>
-            </div>
-            <%= f.submit "Publier", class: "btn btn-primary btn-sm" %>
-          <% end %>
+      <% if user_signed_in? %>
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="card-title">Ajouter un commentaire</h5>
+            <% comment_for_form = defined?(@comment) && @comment ? @comment : Comment.new %>
+            <% if comment_for_form.errors.any? %>
+              <div class="alert alert-danger mb-2" role="alert">
+                <%= comment_for_form.errors.full_messages.join(", ") %>
+              </div>
+            <% end %>
+            <%= form_with model: [ @gossip, comment_for_form ], url: gossip_comments_path(@gossip) do |f| %>
+              <div class="mb-2">
+                <%= f.label :content, "Votre commentaire", class: "form-label" %>
+                <%= f.text_area :content, class: "form-control", rows: 3 %>
+              </div>
+              <%= f.submit "Publier", class: "btn btn-primary btn-sm" %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </section>
+      <% end %>
+    </section>
+  <% end %>
 
   <div class="mt-4">
     <%= link_to "Retour aux potins", root_path, class: "btn btn-outline-secondary" %>

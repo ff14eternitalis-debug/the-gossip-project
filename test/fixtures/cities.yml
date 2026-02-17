@@ -1,0 +1,7 @@
+paris:
+  name: Paris
+  zip_code: "75000"
+
+lyon:
+  name: Lyon
+  zip_code: "69000"

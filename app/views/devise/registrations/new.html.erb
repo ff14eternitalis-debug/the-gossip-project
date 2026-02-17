@@ -20,6 +20,10 @@
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
         </div>
         <div class="mb-3">
+          <%= f.label :avatar, "Photo de profil", class: "form-label" %>
+          <%= f.file_field :avatar, accept: "image/*", class: "form-control" %>
+        </div>
+        <div class="mb-3">
           <%= f.submit "Inscription", class: "btn btn-primary w-100" %>
         </div>
       <% end %>

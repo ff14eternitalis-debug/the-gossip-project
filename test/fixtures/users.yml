@@ -1,0 +1,15 @@
+alice:
+  first_name: Alice
+  last_name: Dupont
+  email: alice@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  age: 25
+  city: paris
+
+bob:
+  first_name: Bob
+  last_name: Martin
+  email: bob@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  age: 30
+  city: lyon

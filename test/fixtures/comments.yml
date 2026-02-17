@@ -1,0 +1,5 @@
+one:
+  content: Super potin !
+  user: bob
+  commentable_type: Gossip
+  commentable_id: <%= ActiveRecord::FixtureSet.identify(:one) %>

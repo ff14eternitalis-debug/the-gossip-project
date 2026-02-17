@@ -32,6 +32,15 @@
     </div>
   <% end %>
   <div class="mb-3">
+    <%= f.label :image, "Image (optionnel)", class: "form-label" %>
+    <% if @gossip.image.attached? %>
+      <div class="mb-2">
+        <%= image_tag @gossip.image, class: "img-fluid rounded", style: "max-height: 200px" %>
+      </div>
+    <% end %>
+    <%= f.file_field :image, accept: "image/*", class: "form-control" %>
+  </div>
+  <div class="mb-3">
     <%= f.submit class: "btn btn-primary" %>
   </div>
 <% end %>

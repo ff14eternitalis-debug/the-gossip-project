@@ -1,0 +1,29 @@
+<div class="container mt-5">
+  <h1>Nouveau message</h1>
+
+  <% if @message.errors.any? %>
+    <div class="alert alert-danger mt-3">
+      <ul class="mb-0">
+        <% @message.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @message, url: conversations_path, local: true, class: "mt-4" do |f| %>
+    <div class="mb-3">
+      <%= f.label :recipient_ids, "Destinataire(s)", class: "form-label" %>
+      <%= f.collection_select :recipient_ids, @users, :id, :first_name, { selected: @recipient&.id }, { class: "form-select", multiple: true } %>
+      <div class="form-text">Maintenez Ctrl (ou Cmd) pour selectionner plusieurs destinataires.</div>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :content, "Message", class: "form-label" %>
+      <%= f.text_area :content, class: "form-control", rows: 5 %>
+    </div>
+
+    <%= f.submit "Envoyer", class: "btn btn-primary" %>
+    <%= link_to "Annuler", conversations_path, class: "btn btn-outline-secondary ms-2" %>
+  <% end %>
+</div>

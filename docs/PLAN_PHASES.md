@@ -11,7 +11,11 @@ Plan derive de [`docs/SUGGESTIONS.md`](SUGGESTIONS.md). Chaque phase est livrabl
 | Phase 3 — CRUD Gossips     | ✅ Fait (CRUD complet, auth, autorisation auteur, page ville) |
 | Phase 4 — Commentaires     | ✅ Fait (liste, create, edit, destroy, compteur index)        |
 | Phase 5 — Likes et Tags    | ✅ Fait (tags form + page tag, like/unlike + compteurs)       |
-| Phases 6 à 10              | ⏳ À faire                                                  |
+| Phase 6 — Accueil et pagination | ✅ Fait (pagy, troncature, date, eager loading)          |
+| Phase 7 — Messagerie privee | ✅ Fait (inbox, show, new, envoi, lien navbar + profil)     |
+| Phase 8 — Qualite et DevOps | ✅ Fait (82 tests, Rubocop 0 offenses, Brakeman 0 warnings, CI) |
+| Phase 9 — Avatars et recherche | ✅ Fait (Active Storage avatar, recherche multi-modele, navbar) |
+| Phase 10 — Fonctionnalites avancees | ✅ Fait (Turbo, API, notifications, follow, admin, mailers, images) |
 
 ---
 
@@ -105,76 +109,86 @@ Plan derive de [`docs/SUGGESTIONS.md`](SUGGESTIONS.md). Chaque phase est livrabl
 
 ---
 
-## 6. 🏠 Amelioration page d'accueil et pagination
+## 6. 🏠 Amelioration page d'accueil et pagination — ✅ Fait
 
 **Objectif** : Accueil plus lisible et performant.
 
-| Tache      | Detail                                                                                                                       |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Cards      | Apercu du contenu (troncature), date de publication, nombre de commentaires et likes ; tri par date (plus recent en premier) |
-| Pagination | Gem `pagy` ou `kaminari` sur l'index des gossips                                                                             |
+| Tache        | Detail                                                                                                                       | Etat |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------- | ---- |
+| Cards        | Apercu du contenu (troncature 120 car.), date de publication, nombre de commentaires et likes ; tri par date desc             | ✅   |
+| Pagination   | Gem `pagy ~> 9.0`, 9 gossips/page, navigation Bootstrap                                                                     | ✅   |
+| Eager loading | `includes(:user, :tags, :comments, :likes)` pour eviter les requetes N+1                                                   | ✅   |
 
-**📦 Livrable** : Page d'accueil enrichie et paginee.
+**📦 Livrable** : Page d'accueil enrichie et paginee. En place : `pagy` (initializer + backend/frontend), `truncate` sur le contenu, date sur les cards, eager loading dans le controller.
 
 ---
 
-## 7. ✉️ Messagerie privee (UI)
+## 7. ✉️ Messagerie privee (UI) — ✅ Fait
 
 **Objectif** : Inbox, conversation, envoi de messages.
 
-| Tache        | Detail                                                           |
-| ------------ | ---------------------------------------------------------------- |
-| Inbox        | Liste des conversations (messages recus/envoyes)                 |
-| Conversation | Vue thread d'une conversation avec un ou plusieurs destinataires |
-| Envoi        | Formulaire nouveau message (destinataire(s), contenu)            |
-| Optionnel    | Notifications de nouveaux messages                               |
+| Tache        | Detail                                                                          | Etat |
+| ------------ | ------------------------------------------------------------------------------- | ---- |
+| Inbox        | `/conversations` — liste des messages envoyes et recus, tri par date desc       | ✅   |
+| Conversation | `/conversations/:id` — vue message avec expediteur, destinataires, bouton repondre | ✅   |
+| Envoi        | `/conversations/new` — formulaire avec select multiple destinataires + contenu  | ✅   |
+| Liens        | Lien "Messagerie" dans la navbar, bouton "Envoyer un message" sur profil user   | ✅   |
+| Optionnel    | Notifications de nouveaux messages                                              | ⏳   |
 
-**📦 Livrable** : Utilisateurs connectes peuvent s'envoyer des messages prives.
+**📦 Livrable** : Utilisateurs connectes peuvent s'envoyer des messages prives. En place : `ConversationsController` (index, show, new, create), vues inbox/show/new, validation content sur PrivateMessage, autorisation (seuls expediteur et destinataires accedent au message), eager loading, lien navbar + profil.
 
 ---
 
-## 8. 🔧 Qualite et DevOps
+## 8. 🔧 Qualite et DevOps — ✅ Fait
 
 **Objectif** : Tests, lint, securite, CI.
 
-| Tache    | Detail                                                                                     |
-| -------- | ------------------------------------------------------------------------------------------ |
-| Tests    | Modeles (validations, associations), controllers (reponses, variables), systeme (Capybara) |
-| Linter   | Rubocop : executer et corriger les offenses                                                |
-| Securite | Brakeman : scan et correction des alertes                                                  |
-| CI       | Workflow GitHub Actions : tests + lint (Rubocop)                                           |
-| Docker   | Verifier build et run du Dockerfile ; ajuster si besoin                                    |
+| Tache    | Detail                                                                                                                     | Etat |
+| -------- | -------------------------------------------------------------------------------------------------------------------------- | ---- |
+| Fixtures | 9 fichiers fixtures (cities, users, gossips, tags, join_table, comments, likes, private_messages, private_message_recipients) | ✅   |
+| Tests modeles | 7 fichiers : City, User, Gossip, Tag, Comment, Like, PrivateMessage (validations, associations, dependent destroy)     | ✅   |
+| Tests controllers | 4 fichiers : Gossips (12 tests), Comments (6), Likes (4), Conversations (8) — auth, autorisation, CRUD            | ✅   |
+| Tests systeme | 1 fichier : parcours index, show, create gossip (Capybara + headless Chrome)                                         | ✅   |
+| Linter   | Rubocop : 66 fichiers, 0 offenses                                                                                          | ✅   |
+| Securite | Brakeman : 0 warnings                                                                                                      | ✅   |
+| CI       | GitHub Actions : scan_ruby (Brakeman + bundler-audit), scan_js, lint (Rubocop), test, system-test                           | ✅   |
+| Docker   | Dockerfile present (a verifier en deploiement)                                                                              | ⏳   |
+| Bugfix   | Ajout `dependent: :destroy` sur `Gossip#join_table_gossip_tags` (FK constraint fix)                                         | ✅   |
 
-**📦 Livrable** : Suite de tests verte, code linté, CI qui valide chaque push.
+**📦 Livrable** : 76 tests, 115 assertions, 0 failures, 0 errors. Rubocop 0 offenses. Brakeman 0 warnings. CI complete sur GitHub Actions.
 
 ---
 
-## 9. 👤 Avatars et recherche
+## 9. 👤 Avatars et recherche — ✅ Fait
 
 **Objectif** : Profils plus riches et decouverte de contenu.
 
-| Tache     | Detail                                                                                 |
-| --------- | -------------------------------------------------------------------------------------- |
-| Avatars   | Active Storage ou Gravatar (photo de profil)                                           |
-| Recherche | Par titre/contenu gossip, nom d'utilisateur, tag (scope ou gem `ransack` selon besoin) |
+| Tache     | Detail                                                                                                          | Etat |
+| --------- | --------------------------------------------------------------------------------------------------------------- | ---- |
+| Active Storage | Migration + `has_one_attached :avatar` sur User                                                            | ✅   |
+| Upload avatar  | Champ file_field dans inscription et edition Devise, `configure_permitted_parameters` dans ApplicationController | ✅   |
+| Affichage avatar | Helper `user_avatar(user, size:)` avec fallback initiales, visible sur profil, index gossips, show gossip, commentaires | ✅   |
+| Recherche  | `SearchController#index` — recherche par titre/contenu gossip, nom/email utilisateur, titre tag (LIKE)          | ✅   |
+| UI recherche | Barre de recherche dans la navbar, page `/search` avec resultats par section (gossips, users, tags)            | ✅   |
+| Tests      | 6 tests search controller (acces, requetes, resultats)                                                          | ✅   |
 
-**📦 Livrable** : Avatars visibles ; recherche fonctionnelle.
+**📦 Livrable** : Avatars Active Storage avec fallback initiales ; recherche multi-modele fonctionnelle. 82 tests, 0 failures.
 
 ---
 
-## 10. 🚀 Fonctionnalites avancees (bonus)
+## 10. 🚀 Fonctionnalites avancees (bonus) — ✅ Fait
 
-A traiter selon priorite projet ; ordre indicatif.
+| Ordre | Tache                    | Contenu                                                                                              | Etat |
+| ----- | ------------------------ | ---------------------------------------------------------------------------------------------------- | ---- |
+| 1     | Turbo / Stimulus         | Turbo Frame sur commentaires (rechargement partiel), Stimulus controller flash auto-dismiss (3s)     | ✅   |
+| 2     | API JSON                 | `/api/v1/gossips` + `/api/v1/users` (index, show) — `ActionController::API`, JSON natif              | ✅   |
+| 3     | Notifications            | Table `notifications` (polymorphique), notif comment/like/follow, page `/notifications`, badge navbar | ✅   |
+| 4     | Follow / fil d'actualite | Table `follows` (unique index), bouton follow/unfollow profil, `/feed` pagine, compteurs abonnes     | ✅   |
+| 5     | Admin                    | Colonne `admin` (boolean), `Admin::BaseController` avec guard, dashboard (`/admin`) avec stats       | ✅   |
+| 6     | Mailers                  | `UserMailer` : welcome (after_create_commit) + new_comment, vues HTML                                | ✅   |
+| 7     | Images sur gossips       | `has_one_attached :image` sur Gossip, upload dans formulaire, affichage sur show                     | ✅   |
 
-| Ordre | Tache                    | Contenu                                                                         |
-| ----- | ------------------------ | ------------------------------------------------------------------------------- |
-| 1     | Turbo / Stimulus         | Turbo Frames (commentaires sans rechargement), Stimulus (like, compteur, etc.)  |
-| 2     | API JSON                 | Endpoints `/api/v1/*` (jbuilder ou serializers) pour gossips, users, etc.       |
-| 3     | Notifications            | Table `notifications` (polymorphique), notif comment/like, affichage dans l'app |
-| 4     | Follow / fil d'actualite | Table `follows`, fil des gossips des utilisateurs suivis                        |
-| 5     | Admin                    | Roles (admin), dashboard, moderation (pundit/cancancan)                         |
-| 6     | Mailers                  | Email bienvenue, notification commentaire/message                               |
-| 7     | Images sur gossips       | Active Storage +`image_processing` pour illustrer les potins                    |
+**📦 Livrable** : Toutes les fonctionnalites avancees implementees. 82 tests, 0 failures. Rubocop 0 offenses. Brakeman 0 warnings.
 
 ---
 

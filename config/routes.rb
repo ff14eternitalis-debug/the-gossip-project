@@ -29,8 +29,34 @@ Rails.application.routes.draw do
   # Likes (polymorphique)
   resources :likes, only: [ :create, :destroy ]
 
+  # Messagerie privee
+  resources :conversations, only: [ :index, :show, :new, :create ]
+
   # Users
   resources :users, only: [ :show ]
+
+  # Follow / Feed
+  resources :follows, only: [ :create, :destroy ]
+  get "/feed", to: "feed#index", as: "feed"
+
+  # Notifications
+  resources :notifications, only: [ :index ]
+
+  # Recherche
+  get "/search", to: "search#index", as: "search"
+
+  # Admin
+  namespace :admin do
+    get "/", to: "dashboard#index", as: "dashboard"
+  end
+
+  # API JSON
+  namespace :api do
+    namespace :v1 do
+      resources :gossips, only: [ :index, :show ]
+      resources :users, only: [ :index, :show ]
+    end
+  end
 
   # Pages statiques
   get "/team", to: "static_pages#team"

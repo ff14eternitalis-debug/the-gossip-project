@@ -1,0 +1,4 @@
+one:
+  user: bob
+  likeable_type: Gossip
+  likeable_id: <%= ActiveRecord::FixtureSet.identify(:one) %>

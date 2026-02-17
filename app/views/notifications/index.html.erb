@@ -1,0 +1,32 @@
+<div class="container mt-5">
+  <h1>Notifications</h1>
+
+  <% if @notifications.any? %>
+    <div class="list-group mt-4">
+      <% @notifications.each do |notification| %>
+        <div class="list-group-item <%= "list-group-item-info" unless notification.read %>">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <% case notification.action %>
+              <% when "comment" %>
+                <% if notification.notifiable.is_a?(Comment) %>
+                  <strong><%= notification.notifiable.user.first_name %></strong> a commente votre potin.
+                <% end %>
+              <% when "like" %>
+                <% if notification.notifiable.is_a?(Like) %>
+                  <strong><%= notification.notifiable.user.first_name %></strong> a aime votre
+                  <%= notification.notifiable.likeable_type == "Gossip" ? "potin" : "commentaire" %>.
+                <% end %>
+              <% when "follow" %>
+                <strong><%= notification.notifiable.follower.first_name %></strong> vous suit.
+              <% end %>
+            </div>
+            <small class="text-muted"><%= time_ago_in_words(notification.created_at) %></small>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted mt-4">Aucune notification.</p>
+  <% end %>
+</div>

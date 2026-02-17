@@ -1,0 +1,55 @@
+<div class="container mt-5">
+  <h1>Dashboard Admin</h1>
+
+  <div class="row mt-4">
+    <div class="col-md-4 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h2><%= @users_count %></h2>
+          <p class="text-muted mb-0">Utilisateurs</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h2><%= @gossips_count %></h2>
+          <p class="text-muted mb-0">Potins</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h2><%= @comments_count %></h2>
+          <p class="text-muted mb-0">Commentaires</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <h3>Derniers utilisateurs</h3>
+      <ul class="list-group">
+        <% @recent_users.each do |user| %>
+          <li class="list-group-item d-flex justify-content-between">
+            <%= link_to "#{user.first_name} #{user.last_name}", user_path(user) %>
+            <small class="text-muted"><%= user.created_at.strftime("%d/%m/%Y") %></small>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h3>Derniers potins</h3>
+      <ul class="list-group">
+        <% @recent_gossips.each do |gossip| %>
+          <li class="list-group-item d-flex justify-content-between">
+            <%= link_to gossip.title, gossip_path(gossip) %>
+            <small class="text-muted"><%= gossip.user.first_name %></small>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
