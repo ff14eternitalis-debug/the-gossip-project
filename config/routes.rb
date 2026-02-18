@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # Page d'accueil
   root "gossips#index"
 
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
 
   # Gossips + commentaires (create nested)
   resources :gossips do

@@ -4,6 +4,16 @@
       <h2>Inscription</h2>
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-3" }) do |f| %>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <%= f.label :first_name, "Prénom", class: "form-label" %>
+            <%= f.text_field :first_name, class: "form-control" %>
+          </div>
+          <div class="col-md-6 mb-3">
+            <%= f.label :last_name, "Nom", class: "form-label" %>
+            <%= f.text_field :last_name, class: "form-control" %>
+          </div>
+        </div>
         <div class="mb-3">
           <%= f.label :email, class: "form-label" %>
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
@@ -18,6 +28,10 @@
         <div class="mb-3">
           <%= f.label :password_confirmation, "Confirmation du mot de passe", class: "form-label" %>
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :city_id, "Ville", class: "form-label" %>
+          <%= f.collection_select :city_id, City.order(:name), :id, :name, { include_blank: "— Choisir une ville —" }, { class: "form-select" } %>
         </div>
         <div class="mb-3">
           <%= f.label :avatar, "Photo de profil", class: "form-label" %>

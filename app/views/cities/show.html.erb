@@ -12,6 +12,17 @@
             <div class="card-body">
               <h5 class="card-title"><%= gossip.title %></h5>
               <p class="card-text text-muted">Par <%= gossip.user.first_name %></p>
+              <p class="card-text small text-muted">
+                <%= gossip.likes.size %> like<%= "s" if gossip.likes.size != 1 %>
+                <% if user_signed_in? %>
+                  <% user_like = gossip.likes.find_by(user: current_user) %>
+                  <% if user_like %>
+                    <%= button_to "Unlike", like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" %>
+                  <% else %>
+                    <%= button_to "Like", likes_path(likeable_type: "Gossip", likeable_id: gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" %>
+                  <% end %>
+                <% end %>
+              </p>
             </div>
             <div class="card-footer">
               <%= link_to "Voir plus", gossip_path(gossip), class: "btn btn-primary btn-sm" %>

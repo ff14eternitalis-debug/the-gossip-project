@@ -4,6 +4,24 @@
       <h2>Modifier mon compte</h2>
       <%= render "devise/shared/error_messages", resource: resource %>
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "mt-3" }) do |f| %>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <%= f.label :first_name, "Prénom", class: "form-label" %>
+            <%= f.text_field :first_name, class: "form-control" %>
+          </div>
+          <div class="col-md-6 mb-3">
+            <%= f.label :last_name, "Nom", class: "form-label" %>
+            <%= f.text_field :last_name, class: "form-control" %>
+          </div>
+        </div>
+        <div class="mb-3">
+          <%= f.label :age, "Âge", class: "form-label" %>
+          <%= f.number_field :age, min: 1, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :description, "Description", class: "form-label" %>
+          <%= f.text_area :description, rows: 3, class: "form-control" %>
+        </div>
         <div class="mb-3">
           <%= f.label :email, class: "form-label" %>
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
@@ -18,8 +36,12 @@
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
         </div>
         <div class="mb-3">
+          <%= f.label :city_id, "Ville", class: "form-label" %>
+          <%= f.collection_select :city_id, City.order(:name), :id, :name, { include_blank: "— Choisir une ville —" }, { class: "form-select" } %>
+        </div>
+        <div class="mb-3">
           <%= f.label :avatar, "Photo de profil", class: "form-label" %>
-          <% if resource.avatar.attached? %>
+          <% if resource.persisted? && resource.avatar.attached? && resource.avatar.attachment.persisted? %>
             <div class="mb-2">
               <%= image_tag resource.avatar, class: "rounded-circle", width: 80, height: 80, style: "object-fit: cover" %>
             </div>

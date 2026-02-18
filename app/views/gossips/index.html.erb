@@ -20,7 +20,16 @@
             </p>
             <p class="card-text"><%= truncate(gossip.content, length: 120) %></p>
             <p class="card-text small text-muted">
-              <%= gossip.comments.size %> commentaire<%= "s" if gossip.comments.size != 1 %> — <%= gossip.likes.size %> like<%= "s" if gossip.likes.size != 1 %>
+              <%= gossip.comments.size %> commentaire<%= "s" if gossip.comments.size != 1 %> —
+              <%= gossip.likes.size %> like<%= "s" if gossip.likes.size != 1 %>
+              <% if user_signed_in? %>
+                <% user_like = gossip.likes.find_by(user: current_user) %>
+                <% if user_like %>
+                  <%= button_to "Unlike", like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" %>
+                <% else %>
+                  <%= button_to "Like", likes_path(likeable_type: "Gossip", likeable_id: gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" %>
+                <% end %>
+              <% end %>
             </p>
             <% if gossip.tags.any? %>
               <p class="card-text small">

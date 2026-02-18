@@ -1,5 +1,5 @@
 class GossipsController < ApplicationController
-  before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :authenticate_user!, only: [ :new, :create, :show, :edit, :update, :destroy ]
   before_action :set_gossip, only: [ :show, :edit, :update, :destroy ]
   before_action :authorize_gossip!, only: [ :edit, :update, :destroy ]
 
