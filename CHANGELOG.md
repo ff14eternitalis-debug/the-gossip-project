@@ -2,6 +2,45 @@
 
 Toutes les modifications notables du projet sont documentees dans ce fichier.
 
+## [1.1.0] - 2026-02-18
+
+### Ajoute
+
+- **Likes sur index et cities** : boutons Like/Unlike affiches sur la page d'accueil (`gossips#index`) et la page ville (`cities#show`), en plus de la page `gossips#show` deja existante ; compteur de likes ajoute sur `cities#show`
+- **Champ ville dans les formulaires Devise** : select `city_id` ajoute aux formulaires d'inscription (`new`) et d'edition de compte (`edit`), liste triee par nom, option vide incluse
+- **Modification du profil utilisateur** : bouton "Modifier mon profil" sur la page `users#show` (visible uniquement pour le compte courant), redirigeant vers `edit_user_registration_path`
+- **Formulaire d'edition complet** : champs `first_name`, `last_name`, `age`, `description` ajoutes au formulaire `devise/registrations/edit`
+- **Champs prenom/nom a l'inscription** : champs `first_name` et `last_name` ajoutes au formulaire `devise/registrations/new`
+- **Background etoile anime** : fond noir avec etoiles et scintillement via images CDN (S3), animation `move-background` sur toutes les pages via le layout
+- **Fusee decorative** : element CSS pur (rouge/blanc/cyan) positionne en bas a droite, animation `rocketfly` + flamme `fire`, `pointer-events: none`
+- **Bouton "Nouveau potin" stylise** : classes `button--primary` + `button--take-off` avec SVG fusee, animation `readyRocket` et `flyRocket` au survol
+- **Icones SVG integrees** :
+  - `favicon.svg` : favicon du site (remplace `icon.png` / `icon.svg`)
+  - `like.svg` : compteur de likes + boutons Like/Unlike sur `gossips#index`, `gossips#show` (potin et commentaires) et `cities#show`
+  - `comment.svg` : compteur de commentaires sur `gossips#index`
+  - `send.svg` : bouton "Publier" dans le formulaire gossip et bouton "Envoyer" dans la messagerie
+  - `follow.svg` : bouton "Suivre" sur le profil utilisateur
+  - `validate_follow.svg` : bouton "Ne plus suivre" sur le profil utilisateur
+  - `follower.svg` : compteur d'abonnes sur le profil utilisateur
+
+### Corrige
+
+- **`gossips#show` non protege** : ajout de `:show` dans `before_action :authenticate_user!` — un visiteur non connecte est desormais redirige vers la page de connexion
+- **Menu burger mobile non refermable** : Bootstrap JS deplace du `<body>` vers le `<head>` pour eviter le double enregistrement des event listeners lors des navigations Turbo
+- **Barre de recherche chevauche le burger** : ajout de `mt-2 mt-lg-0` sur le formulaire de recherche pour creer un espacement correct en vue mobile
+- **Barre de recherche etire en desktop** : remplacement de `w-100` par une largeur fixe `220px` sur le champ de recherche
+- **Erreur `Cannot get a signed_id for a new record`** : ajout de `resource.avatar.attachment.persisted?` dans la condition d'affichage de l'avatar sur le formulaire d'edition Devise
+- **Erreur `Missing template devise/registrations/update`** : creation de `Users::RegistrationsController` surchargeant l'action `update` pour faire un `render :edit` propre en cas d'erreur (incompatibilite Devise 5 + gem `responders`)
+
+### Modifie
+
+- **Routes Devise** : `devise_for :users` pointe desormais vers `controllers: { registrations: "users/registrations" }`
+- **`CitiesController`** : ajout de `includes(:likes)` pour eviter les requetes N+1 lors de l'affichage des boutons Like sur la page ville
+- **Navbar** : `me-3` remplace par `me-lg-3` sur le formulaire de recherche pour un rendu correct sur desktop et mobile
+- **`.container` CSS renomme en `.rocket-scene`** pour eviter le conflit avec la classe Bootstrap `.container`
+- **Couleurs custom navbar et cards** : navbar `#0a0b1e` et cards `#161b33` via regles CSS `!important` surpassant Bootstrap
+- **Couleur bouton \"Nouveau potin\"** : palette changee de vert vers cyan `#00bdf2` (texte/icone `#0a0b1e`) pour coherence avec le theme spatial
+
 ## [1.0.0] - 2026-02-17
 
 ### Ajoute

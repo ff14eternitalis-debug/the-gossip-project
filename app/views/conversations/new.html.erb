@@ -23,7 +23,9 @@
       <%= f.text_area :content, class: "form-control", rows: 5 %>
     </div>
 
-    <%= f.submit "Envoyer", class: "btn btn-primary" %>
+    <button type="submit" class="btn btn-primary">
+      <img src="/send.svg" width="16" height="16" class="me-1"> Envoyer
+    </button>
     <%= link_to "Annuler", conversations_path, class: "btn btn-outline-secondary ms-2" %>
   <% end %>
 </div>

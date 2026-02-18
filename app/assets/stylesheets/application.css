@@ -8,3 +8,223 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* ── Couleurs custom ── */
+.navbar {
+  background-color: #0a0b1e !important;
+}
+
+.card {
+  background-color: #161b33 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ── Bouton "Nouveau potin" ── */
+:root {
+  --green: #00bdf2;
+  --dark-green: #0a0b1e;
+}
+
+.button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  transition: box-shadow ease-in-out 300ms;
+  text-decoration: none;
+}
+
+.button--primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark-green);
+  background: var(--green);
+}
+
+.button--primary:hover {
+  opacity: 0.92;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.4);
+  color: var(--dark-green);
+}
+
+.button--primary:active,
+.button--primary:focus {
+  outline: none;
+  color: var(--dark-green);
+}
+
+.button--primary .icon {
+  margin-right: 8px;
+  margin-left: 0;
+}
+
+.button--primary .icon svg {
+  fill: var(--dark-green);
+}
+
+.button--take-off {
+  overflow: hidden;
+  margin-right: 16px;
+}
+
+.button--take-off:hover .icon {
+  animation: readyRocket 0.5s ease;
+}
+
+.button--take-off:hover .icon .svg-wrapper {
+  animation: flyRocket 1s ease infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes readyRocket {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(-35deg); }
+}
+
+@keyframes flyRocket {
+  0%   { transform: rotate(-35deg) translate(0, 0); }
+  70%  { transform: rotate(-35deg) translate(40px, -40px); }
+  71%  { transform: rotate(-35deg) translate(-140px, -40px); }
+  72%  { transform: rotate(-35deg) translate(-140px, 40px); }
+  73%  { transform: rotate(-35deg) translate(-40px, 40px); }
+  100% { transform: rotate(-35deg) translate(0px, 0px); }
+}
+
+/* ── Background étoilé ── */
+.stars {
+  background: black url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  z-index: -110;
+}
+
+.twinkling {
+  width: 10000px;
+  height: 100%;
+  background: transparent url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png") repeat;
+  background-size: 1000px 1000px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -100;
+  animation: move-background 20s linear infinite;
+}
+
+@keyframes move-background {
+  from { transform: translate3d(0px, 0px, 0px); }
+  to   { transform: translate3d(1000px, 0px, 0px); }
+}
+
+/* ── Fusée décorative ── */
+.rocket-animation {
+  position: fixed;
+  top: 70px;
+  right: 60px;
+  z-index: 0;
+  pointer-events: none;
+  animation: rocketfly 5s ease-in-out infinite;
+}
+
+.rocket-scene {
+  position: relative;
+  display: inline-block;
+  transform: rotate(45deg) scale(0.45);
+  transform-origin: center center;
+  margin-bottom: 60px;
+}
+
+.rocket {
+  background-image: linear-gradient(red 35%, white 0%, white);
+  position: relative;
+  height: 220px;
+  width: 100px;
+  border-radius: 100% 100% 50% 50%;
+}
+
+.rocket .window {
+  height: 50px;
+  width: 50px;
+  background: #b0b0b0;
+  border: 7px solid #848687;
+  border-radius: 50%;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.Propeller {
+  border-bottom: 25px solid #515557;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  height: 0;
+  width: 100px;
+}
+
+.fin {
+  z-index: -5;
+  position: absolute;
+  bottom: 25px;
+  height: 55px;
+  width: 80px;
+  background: #00bdf2;
+}
+
+.fin-left {
+  left: -45px;
+  border-top-left-radius: 90%;
+  border-bottom-left-radius: 15%;
+}
+
+.fin-right {
+  right: -45px;
+  border-top-right-radius: 90%;
+  border-bottom-right-radius: 15%;
+}
+
+.orange {
+  position: absolute;
+  bottom: -75px;
+  width: 100%;
+  z-index: -99;
+  padding-bottom: 100%;
+  background: #ff6234;
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(-135deg);
+  animation: fire 1s linear infinite alternate;
+  animation-delay: 1s;
+}
+
+.yellow {
+  position: absolute;
+  bottom: -60px;
+  z-index: -99;
+  left: 10%;
+  width: 80%;
+  padding-bottom: 80%;
+  background: #ffb726;
+  border-radius: 0 75% 75% 75%;
+  animation: fire 1s linear infinite alternate;
+}
+
+@keyframes fire {
+  0%   { opacity: 1;   transform: scale(1)   rotate(-135deg); }
+  100% { opacity: 0.8; transform: scale(0.9) rotate(-135deg); }
+}
+
+@keyframes rocketfly {
+  0%,  100% { transform: translateX(-10px); }
+  20%, 25%  { transform: translateX(15px); }
+  40%, 45%  { transform: translate(5px); }
+  60%, 65%  { transform: translate(15px); }
+  80%, 85%  { transform: translate(10px); }
+}

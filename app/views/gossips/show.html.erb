@@ -26,13 +26,18 @@
       <% end %>
       <p><%= @gossip.content %></p>
       <p class="text-muted small mb-0">
+        <img src="/like.svg" width="14" height="14" class="me-1">
         <%= @gossip.likes.size %> like<%= "s" if @gossip.likes.size != 1 %>
         <% if user_signed_in? %>
           <% user_like = @gossip.likes.find_by(user: current_user) %>
           <% if user_like %>
-            <%= button_to "Unlike", like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" %>
+            <%= button_to like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" do %>
+              <img src="/like.svg" width="14" height="14"> Unlike
+            <% end %>
           <% else %>
-            <%= button_to "Like", likes_path(likeable_type: "Gossip", likeable_id: @gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" %>
+            <%= button_to likes_path(likeable_type: "Gossip", likeable_id: @gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" do %>
+              <img src="/like.svg" width="14" height="14"> Like
+            <% end %>
           <% end %>
         <% end %>
       </p>
@@ -59,13 +64,20 @@
               — <%= comment.created_at.strftime("%d/%m/%Y %Hh%M") %>
             </p>
             <p class="mb-1"><%= comment.content %></p>
-            <span class="small text-muted"><%= comment.likes.size %> like<%= "s" if comment.likes.size != 1 %></span>
+            <span class="small text-muted">
+              <img src="/like.svg" width="13" height="13" class="me-1">
+              <%= comment.likes.size %> like<%= "s" if comment.likes.size != 1 %>
+            </span>
             <% if user_signed_in? %>
               <% clike = comment.likes.find_by(user: current_user) %>
               <% if clike %>
-                <%= button_to "Unlike", like_path(clike), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" %>
+                <%= button_to like_path(clike), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" do %>
+                  <img src="/like.svg" width="13" height="13"> Unlike
+                <% end %>
               <% else %>
-                <%= button_to "Like", likes_path(likeable_type: "Comment", likeable_id: comment.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" %>
+                <%= button_to likes_path(likeable_type: "Comment", likeable_id: comment.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" do %>
+                  <img src="/like.svg" width="13" height="13"> Like
+                <% end %>
               <% end %>
             <% end %>
             <% if user_signed_in? && current_user == comment.user %>
