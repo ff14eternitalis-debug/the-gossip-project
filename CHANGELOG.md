@@ -6,6 +6,7 @@ Toutes les modifications notables du projet sont documentees dans ce fichier.
 
 ### Ajoute
 
+- **Documentation correspondance Semaine 4 THP** : `docs/CORRESPONDANCE_SEMAINE_04_THP.md` — analyse point par point et jour par jour (Jour 1 à 5) vs programme THP, plus section bonus hors THP
 - **Systeme de cookies "Se souvenir de moi"** : implementation complete via le module Devise `:rememberable` (deja present) :
   - **Connexion** : checkbox "Se souvenir de moi" deja presente sur le formulaire (`sessions/new`) — fonctionnelle avec le cookie Devise
   - **Inscription** : checkbox "Se souvenir de moi" ajoutee au formulaire `registrations/new` ; si cochee, `remember_me!` est appele apres la creation du compte via la surcharge de l'action `create` dans `Users::RegistrationsController`

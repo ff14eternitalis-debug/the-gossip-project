@@ -7,7 +7,7 @@ The goal of this project is to master **ActiveRecord**, complex database relatio
 
 ## Features
 
-- **Authentication** (Devise): sign up, sign in, sign out. Navbar shows different links when logged in (Mon compte, Deconnexion) or out (Connexion, Inscription).
+- **Authentication** (Devise): sign up, sign in, sign out. Navbar shows different links when logged in (My account, Sign out) or out (Sign in, Sign up).
 - **Home page** (`/`): paginated gossips (9/page via Pagy) in Bootstrap cards with author avatar, truncated content (120 chars), publication date, comment count, like count, tags.
 - **Gossip CRUD**: create, read, update, delete gossips with optional image upload (Active Storage). Only the author can edit or delete. Tags can be selected (multiple) on create/edit.
 - **Gossip detail page** (`/gossips/:id`): title, content, attached image, author (avatar + link to profile), city link, tags, like/unlike button and count; list of comments (Turbo Frame for partial reload) with author avatar and date; form to add a comment (when logged in).
@@ -185,9 +185,9 @@ CI runs automatically via GitHub Actions (scan_ruby, scan_js, lint, test, system
 
 ### Web Interface
 
-- **Home** (`/`): Browse paginated gossips (9/page). Cards show avatar, title, truncated content, date, comment count, like count, tags. Click "Voir plus" for the full gossip. Logged-in users see "Nouveau potin".
-- **Gossip detail** (`/gossips/:id`): Full content, attached image, author (avatar + link to profile), city link, tags, like/unlike and count. Comments section (Turbo Frame) with avatars; form to add a comment when logged in. Author sees "Modifier" and "Supprimer".
-- **User profile** (`/users/:id`): Avatar, personal info, city, follower/following counts, Follow/Unfollow button, "Envoyer un message" button, list of gossips.
+- **Home** (`/`): Browse paginated gossips (9/page). Cards show avatar, title, truncated content, date, comment count, like count, tags. Click "See more" for the full gossip. Logged-in users see "New gossip".
+- **Gossip detail** (`/gossips/:id`): Full content, attached image, author (avatar + link to profile), city link, tags, like/unlike and count. Comments section (Turbo Frame) with avatars; form to add a comment when logged in. Author sees "Edit" and "Delete".
+- **User profile** (`/users/:id`): Avatar, personal info, city, follower/following counts, Follow/Unfollow button, "Send message" button, list of gossips.
 - **Activity feed** (`/feed`): Timeline of gossips from users you follow, paginated.
 - **Notifications** (`/notifications`): Badge counter in navbar; lists comments, likes, and follows. Auto-marked as read on view.
 - **Inbox** (`/conversations`): List of sent and received messages; click to view details and reply; new message with multi-select recipients.
@@ -300,13 +300,13 @@ User.first.notifications.recent
 
 ## Documentation
 
-- [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md) — Documentation technique
-- [`docs/PLAN_PHASES.md`](docs/PLAN_PHASES.md) — Plan de developpement (10 phases)
-- [`docs/SUGGESTIONS.md`](docs/SUGGESTIONS.md) — Pistes d'amelioration
-- [`docs/DEPLOI_HEROKU_POSTGRESQL.md`](docs/DEPLOI_HEROKU_POSTGRESQL.md) — Mise en ligne Heroku, PostgreSQL
-- [`CHANGELOG.md`](CHANGELOG.md) — Historique des versions
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) — Guide pour contribuer
-- [`CONTRIBUTORS.md`](CONTRIBUTORS.md) — Contributeurs du projet
+- [`docs/DOCUMENTATION.md`](docs/DOCUMENTATION.md) — Technical documentation
+- [`docs/PLAN_PHASES.md`](docs/PLAN_PHASES.md) — Development plan (10 phases)
+- [`docs/SUGGESTIONS.md`](docs/SUGGESTIONS.md) — Improvement suggestions
+- [`docs/DEPLOI_HEROKU_POSTGRESQL.md`](docs/DEPLOI_HEROKU_POSTGRESQL.md) — Heroku and PostgreSQL deployment
+- [`CHANGELOG.md`](CHANGELOG.md) — Version history
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — Contribution guide
+- [`CONTRIBUTORS.md`](CONTRIBUTORS.md) — Project contributors
 
 ### Icons
 
@@ -319,7 +319,7 @@ Favicon and app icon: [`public/icon.svg`](public/icon.svg) (used in the layout).
 
 ## Authors
 
-Projet a visee pedagogique (The Hacking Project). Voir [CONTRIBUTORS.md](CONTRIBUTORS.md) pour la liste des contributeurs.
+Educational project (The Hacking Project). See [CONTRIBUTORS.md](CONTRIBUTORS.md) for the list of contributors.
 
 [Morgan](https://github.com/DevRedious), [Romain](https://github.com/ff14eternitalis-debug)
 
