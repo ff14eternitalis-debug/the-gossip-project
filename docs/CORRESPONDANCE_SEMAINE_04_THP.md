@@ -290,4 +290,26 @@ Fonctionnalités présentes dans **the-gossip-project** qui ne font **pas** part
 
 ---
 
+## Concordance avec le programme THP
+
+![Concordance THP 95 %](concordance-thp-graphite.svg)
+
+Comptage sur l’ensemble des critères des tableaux ci‑dessus (Jours 1 à 5) :
+
+| Statut | Nombre |
+|--------|--------|
+| OK (conforme) | 76 |
+| Partiel (comportement équivalent) | 1 |
+| Écart | 3 |
+| **Total critères** | **80** |
+
+**Pourcentage de concordance avec THP :**
+
+- **Stricte** (uniquement « OK ») : **95 %** (76 / 80).
+- **Avec partiel compté demi‑conforme** : **95,6 %** (76 + 0,5) / 80.
+
+Les 3 écarts concernent : formulaire de création en `form_tag` (Jour 2), authentification sans Devise (Jour 4), cookies / remember me à la main (Jour 5). Le partiel concerne Turbo Drive (désactivation explicite vs `local: true`).
+
+---
+
 *Document généré pour vérifier la correspondance entre the-gossip-project et le programme Semaine 4 THP (Jour 1 à 5).*

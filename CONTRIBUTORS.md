@@ -12,7 +12,8 @@ Personnes ayant contribué au projet (ordre alphabétique du prénom).
 - Phase 4 (commentaires) : liste, creation sur page gossip, edit/destroy (auteur), compteur sur index
 - Phase 5 (tags et likes) : tags en creation/edition potin, page tag, like/unlike gossips et commentaires, compteurs
 - Documentation technique (`docs/DOCUMENTATION.md`)
-- Correspondance Semaine 4 THP (`docs/CORRESPONDANCE_SEMAINE_04_THP.md`)
+- Correspondance Semaine 4 THP (`docs/CORRESPONDANCE_SEMAINE_04_THP.md`), plan de phase correctifs (`docs/PLAN_PHASE_CORRECTIFS_SEMAINE_04.md`) et visuel concordance (`docs/concordance-thp-graphite.svg`)
+- Documentation curseur personnalise (`docs/CURSEUR_PERSONNALISE_CURSOR_GOSSIP.md`)
 - `CONTRIBUTING.md` et `CONTRIBUTORS.md`
 - `CHANGELOG.md` et règle Cursor (`.cursor/rules/changelog.mdc`)
 - Mise à jour du README (documentation, auteurs, badges CI/Dependabot)
