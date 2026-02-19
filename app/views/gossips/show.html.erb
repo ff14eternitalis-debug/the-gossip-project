@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-5" style="max-width: 860px; margin-left: 3rem;">
   <h1><%= @gossip.title %></h1>
 
   <p class="text-muted d-flex align-items-center gap-2">
@@ -25,22 +25,6 @@
         </div>
       <% end %>
       <p><%= @gossip.content %></p>
-      <p class="text-muted small mb-0">
-        <img src="/like.svg" width="14" height="14" class="me-1">
-        <%= @gossip.likes.size %> like<%= "s" if @gossip.likes.size != 1 %>
-        <% if user_signed_in? %>
-          <% user_like = @gossip.likes.find_by(user: current_user) %>
-          <% if user_like %>
-            <%= button_to like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" do %>
-              <img src="/like.svg" width="14" height="14"> Unlike
-            <% end %>
-          <% else %>
-            <%= button_to likes_path(likeable_type: "Gossip", likeable_id: @gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" do %>
-              <img src="/like.svg" width="14" height="14"> Like
-            <% end %>
-          <% end %>
-        <% end %>
-      </p>
       <% if @gossip.tags.any? %>
         <p class="mb-0 mt-2">
           Tags : <% @gossip.tags.each do |tag| %>
@@ -49,71 +33,104 @@
         </p>
       <% end %>
     </div>
+    <div class="card-footer d-flex align-items-center gap-2">
+      <% if user_signed_in? %>
+        <%# Bouton J'aime %>
+        <% user_like = @gossip.likes.find_by(user: current_user) %>
+        <% if user_like %>
+          <%= button_to like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-primary btn-sm d-inline-flex align-items-center gap-2", aria: { label: "Retirer j'aime" } do %>
+            <img src="/like.svg" width="16" height="16" style="display:block" alt=""> J'aime
+          <% end %>
+        <% else %>
+          <%= button_to likes_path(likeable_type: "Gossip", likeable_id: @gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2", aria: { label: "J'aime ce potin" } do %>
+            <img src="/like.svg" width="16" height="16" style="display:block;opacity:0.7" alt=""> J'aime
+          <% end %>
+        <% end %>
+        <span class="text-muted small" aria-label="<%= @gossip.likes.size %> j'aime"><%= @gossip.likes.size %></span>
+
+        <%# Bouton Commenter %>
+        <button type="button"
+                class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2 ms-2"
+                data-bs-toggle="modal" data-bs-target="#commentModal"
+                aria-label="Ajouter un commentaire">
+          <img src="/comment.svg" width="16" height="16" style="display:block" alt=""> Commenter
+        </button>
+        <span class="text-muted small" aria-label="<%= @gossip.comments.size %> commentaire<%= @gossip.comments.size != 1 ? 's' : '' %>"><%= @gossip.comments.size %></span>
+      <% else %>
+        <span class="d-inline-flex align-items-center gap-2 text-muted small">
+          <img src="/like.svg" width="16" height="16" style="display:block;opacity:0.5" alt="" aria-hidden="true"> <%= @gossip.likes.size %>
+        </span>
+        <span class="d-inline-flex align-items-center gap-2 text-muted small ms-2">
+          <img src="/comment.svg" width="16" height="16" style="display:block;opacity:0.5" alt="" aria-hidden="true"> <%= @gossip.comments.size %>
+        </span>
+      <% end %>
+    </div>
   </div>
 
-  <%= turbo_frame_tag "comments" do %>
-    <section class="mt-5">
-      <h3>Commentaires</h3>
-
-      <% @gossip.comments.each do |comment| %>
-        <div class="card mb-2">
-          <div class="card-body py-2">
-            <p class="mb-1 d-flex align-items-center gap-1">
-              <%= user_avatar(comment.user, size: 22) %>
-              <strong><%= link_to comment.user.first_name, user_path(comment.user) %></strong>
-              — <%= comment.created_at.strftime("%d/%m/%Y %Hh%M") %>
-            </p>
-            <p class="mb-1"><%= comment.content %></p>
-            <span class="small text-muted">
-              <img src="/like.svg" width="13" height="13" class="me-1">
-              <%= comment.likes.size %> like<%= "s" if comment.likes.size != 1 %>
-            </span>
-            <% if user_signed_in? %>
-              <% clike = comment.likes.find_by(user: current_user) %>
-              <% if clike %>
-                <%= button_to like_path(clike), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" do %>
-                  <img src="/like.svg" width="13" height="13"> Unlike
-                <% end %>
-              <% else %>
-                <%= button_to likes_path(likeable_type: "Comment", likeable_id: comment.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0" do %>
-                  <img src="/like.svg" width="13" height="13"> Like
-                <% end %>
-              <% end %>
-            <% end %>
-            <% if user_signed_in? && current_user == comment.user %>
-              <div class="mt-1">
-                <%= link_to "Modifier", edit_comment_path(comment), class: "btn btn-outline-primary btn-sm" %>
-                <%= button_to "Supprimer", comment_path(comment), method: :delete, data: { turbo_confirm: "Supprimer ce commentaire ?" }, form: { class: "d-inline" }, class: "btn btn-outline-danger btn-sm" %>
+  <% if @gossip.comments.any? %>
+    <div class="mt-4">
+      <h6 class="text-muted mb-3"><%= @gossip.comments.size %> commentaire<%= @gossip.comments.size > 1 ? "s" : "" %></h6>
+      <% @gossip.comments.includes(:user).order(created_at: :asc).each do |comment| %>
+        <%= turbo_frame_tag dom_id(comment) do %>
+          <div class="d-flex gap-3 mb-3">
+            <%= user_avatar(comment.user, size: 32) %>
+            <div class="flex-grow-1">
+              <div class="card" style="background:#161b33; border-color:#2a2f4e;">
+                <div class="card-body py-2 px-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-semibold small">
+                      <%= link_to comment.user.first_name, user_path(comment.user), class: "text-decoration-none" %>
+                    </span>
+                    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                      <span class="text-muted" style="font-size:0.75rem;"><%= comment.created_at.strftime("%d/%m/%Y à %Hh%M") %></span>
+                      <% if user_signed_in? && current_user == comment.user %>
+                        <%= link_to "Modifier", edit_comment_path(comment), class: "text-muted text-decoration-none", style: "font-size:0.75rem; line-height:1;" %>
+                        <%= button_to "Supprimer", comment_path(comment), method: :delete,
+                              data: { turbo_confirm: "Supprimer ce commentaire ?" },
+                              form: { class: "d-inline-flex align-items-center m-0" },
+                              class: "btn btn-link p-0 text-danger text-decoration-none border-0",
+                              style: "font-size:0.75rem; line-height:1;" %>
+                      <% end %>
+                    </div>
+                  </div>
+                  <p class="mb-0 small"><%= comment.content %></p>
+                </div>
               </div>
-            <% end %>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
-
-      <% if user_signed_in? %>
-        <div class="card mt-3">
-          <div class="card-body">
-            <h5 class="card-title">Ajouter un commentaire</h5>
-            <% comment_for_form = defined?(@comment) && @comment ? @comment : Comment.new %>
-            <% if comment_for_form.errors.any? %>
-              <div class="alert alert-danger mb-2" role="alert">
-                <%= comment_for_form.errors.full_messages.join(", ") %>
-              </div>
-            <% end %>
-            <%= form_with model: [ @gossip, comment_for_form ], url: gossip_comments_path(@gossip) do |f| %>
-              <div class="mb-2">
-                <%= f.label :content, "Votre commentaire", class: "form-label" %>
-                <%= f.text_area :content, class: "form-control", rows: 3 %>
-              </div>
-              <%= f.submit "Publier", class: "btn btn-primary btn-sm" %>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </section>
+    </div>
   <% end %>
 
   <div class="mt-4">
     <%= link_to "Retour aux potins", root_path, class: "btn btn-outline-secondary" %>
   </div>
 </div>
+
+<%# Modale commentaire %>
+<% if user_signed_in? %>
+  <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background:#161b33; border:1px solid #00bdf2;">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title" id="commentModalLabel">Ajouter un commentaire</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <%= form_with model: [@gossip, Comment.new], url: gossip_comments_path(@gossip), local: true do |f| %>
+            <%= f.text_area :content, class: "form-control", rows: 4,
+                placeholder: "Votre commentaire...",
+                style: "background:#0a0b1e; color:#e0e6f0; border-color:#444;" %>
+            <div class="mt-3 d-flex gap-2">
+              <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2">
+                <img src="/send.svg" width="16" height="16" style="display:block" alt=""> Publier
+              </button>
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

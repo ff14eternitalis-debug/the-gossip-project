@@ -1,22 +1,27 @@
-<div class="container mt-5">
-  <h1>Modifier le commentaire</h1>
-
-  <% if @comment.errors.any? %>
-    <div class="alert alert-danger mb-3" role="alert">
-      <%= @comment.errors.full_messages.join(", ") %>
+<%= turbo_frame_tag dom_id(@comment) do %>
+  <% gossip = @comment.commentable.is_a?(Gossip) ? @comment.commentable : @comment.commentable.commentable %>
+  <div class="d-flex gap-3 mb-3">
+    <%= user_avatar(@comment.user, size: 32) %>
+    <div class="flex-grow-1">
+      <div class="card" style="background:#161b33; border-color:#00bdf2;">
+        <div class="card-body py-2 px-3">
+          <% if @comment.errors.any? %>
+            <div class="alert alert-danger py-1 px-2 mb-2 small">
+              <%= @comment.errors.full_messages.join(", ") %>
+            </div>
+          <% end %>
+          <%= form_with model: @comment, url: comment_path(@comment), method: :patch do |f| %>
+            <%= f.text_area :content, class: "form-control mb-2", rows: 3,
+                style: "background:#0a0b1e; color:#e0e6f0; border-color:#444;" %>
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-1">
+                <img src="/send.svg" width="14" height="14" style="display:block" alt=""> Enregistrer
+              </button>
+              <%= link_to "Annuler", gossip_path(gossip), class: "btn btn-outline-secondary btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <%= form_with model: @comment, url: comment_path(@comment), method: :patch, local: true do |f| %>
-    <div class="mb-3">
-      <%= f.label :content, "Contenu", class: "form-label" %>
-      <%= f.text_area :content, class: "form-control", rows: 4 %>
-    </div>
-    <%= f.submit "Enregistrer", class: "btn btn-primary" %>
-  <% end %>
-
-  <div class="mt-3">
-    <% gossip = @comment.commentable.is_a?(Gossip) ? @comment.commentable : @comment.commentable.commentable %>
-    <%= link_to "Retour au potin", gossip_path(gossip), class: "btn btn-outline-secondary" %>
   </div>
-</div>
+<% end %>

@@ -45,12 +45,13 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <%= link_to "The Gossip Project", root_path, class: "navbar-brand" %>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Basculer la navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <%= form_tag search_path, method: :get, class: "d-flex me-lg-3 mt-2 mt-lg-0" do %>
-            <%= text_field_tag :q, params[:q], class: "form-control form-control-sm", style: "width: 220px", placeholder: "Rechercher..." %>
+          <%= form_tag search_path, method: :get, class: "d-flex me-lg-3 mt-2 mt-lg-0", role: "search" do %>
+            <label for="search_q" class="visually-hidden">Rechercher</label>
+            <%= text_field_tag :q, params[:q], id: "search_q", class: "form-control form-control-sm", style: "width: 220px", placeholder: "Rechercher..." %>
           <% end %>
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
@@ -101,7 +102,9 @@
 
     <%= render "shared/flash_messages" %>
 
-    <%= yield %>
+    <main>
+      <%= yield %>
+    </main>
 
   </body>
 </html>

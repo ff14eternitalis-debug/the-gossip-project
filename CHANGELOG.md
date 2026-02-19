@@ -2,6 +2,29 @@
 
 Toutes les modifications notables du projet sont documentees dans ce fichier.
 
+## [1.2.0] - 2026-02-19
+
+### Ajoute
+
+- **Modale d'ajout de commentaire sur `gossips#show`** : bouton "Commenter" (icone `comment.svg`) ouvre une modale Bootstrap `#commentModal` stylisee (fond `#161b33`, bordure cyan) contenant un textarea et un bouton "Publier" (icone `send.svg`) ; remplace l'ancien formulaire inline sous le potin
+- **Affichage des commentaires sur `gossips#show`** : liste des commentaires sous la carte du potin (avatar, nom cliquable, date, contenu), triee par date croissante ; boutons Modifier/Supprimer visibles uniquement pour l'auteur du commentaire
+- **Edition de commentaire inline** : clic sur "Modifier" remplace la carte du commentaire par un formulaire inline via Turbo Frame (`dom_id(comment)`) sans redirection ; bordure cyan indique l'etat actif ; "Annuler" restaure le commentaire sans rechargement de page
+
+### Corrige
+
+- **Alignement date/Modifier/Supprimer dans carte commentaire** : `d-inline-flex align-items-center m-0` sur le form genere par `button_to` + `line-height:1` pour aligner correctement les trois elements sur la meme ligne
+
+### Modifie
+
+- **Accessibilite WCAG 2.1 AA** — corrections appliquees sur l'ensemble du site :
+  - **Layout** : balise `<main>` englobant le contenu principal ; `aria-controls`, `aria-expanded`, `aria-label="Basculer la navigation"` sur le bouton hamburger ; `<label for="search_q" class="visually-hidden">` + `role="search"` sur la barre de recherche
+  - **Flash messages** : `aria-live="polite"` sur les notices, `aria-live="assertive"` sur les alertes, `aria-atomic="true"` sur les deux
+  - **Images decoratives** : `alt=""` + `aria-hidden="true"` sur toutes les icones SVG non-informatives (`like.svg`, `comment.svg`, `send.svg`, `follow.svg`, `validate_follow.svg`, `follower.svg`) dans tous les fichiers concernes
+  - **Boutons Like/Unlike** : `aria-label` contextualises ("J'aime [titre]" / "Retirer j'aime de [titre]") sur `gossips#index`, `gossips#show`, `cities#show`
+  - **Liens "Voir plus"** : `aria-label="Voir plus : [titre du potin]"` sur tous les liens generiques de `gossips#index`, `users#show`, `cities#show`
+  - **Compteurs** : `aria-label` avec texte complet ("X commentaire(s)", "X j'aime") sur les spans de comptage
+  - **Autocomplete messagerie** : `for="recipient_search"` sur le label Destinataire(s) ; `aria-autocomplete="list"`, `aria-haspopup="listbox"` sur le champ de saisie ; `aria-live="polite"` sur la zone de selection des chips
+
 ## [1.1.0] - 2026-02-18
 
 ### Ajoute

@@ -26,32 +26,37 @@
               Par <%= link_to gossip.user.first_name, user_path(gossip.user), class: "text-decoration-none text-muted" %> — <%= gossip.created_at.strftime("%d/%m/%Y") %>
             </p>
             <p class="card-text"><%= truncate(gossip.content, length: 120) %></p>
-            <p class="card-text small text-muted">
-              <img src="/comment.svg" width="14" height="14" class="me-1">
-              <%= gossip.comments.size %> commentaire<%= "s" if gossip.comments.size != 1 %> —
-              <img src="/like.svg" width="14" height="14" class="me-1">
-              <%= gossip.likes.size %> like<%= "s" if gossip.likes.size != 1 %>
-              <% if user_signed_in? %>
-                <% user_like = gossip.likes.find_by(user: current_user) %>
-                <% if user_like %>
-                  <%= button_to like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" do %>
-                    <img src="/like.svg" width="14" height="14"> Unlike
-                  <% end %>
-                <% else %>
-                  <%= button_to likes_path(likeable_type: "Gossip", likeable_id: gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" do %>
-                    <img src="/like.svg" width="14" height="14"> Like
-                  <% end %>
-                <% end %>
-              <% end %>
-            </p>
             <% if gossip.tags.any? %>
               <p class="card-text small">
                 <% gossip.tags.each do |tag| %><%= link_to tag.title, tag_path(tag), class: "badge bg-secondary text-decoration-none" %> <% end %>
               </p>
             <% end %>
           </div>
-          <div class="card-footer">
-            <%= link_to "Voir plus", gossip_path(gossip), class: "btn btn-primary btn-sm" %>
+          <div class="card-footer d-flex justify-content-between align-items-center">
+            <%= link_to gossip_path(gossip), class: "btn btn-primary btn-sm", aria: { label: "Voir plus : #{gossip.title}" } do %>Voir plus<% end %>
+            <div class="d-flex align-items-center gap-3" style="line-height:1">
+              <span class="d-flex align-items-center gap-1 text-muted small">
+                <img src="/comment.svg" width="15" height="15" style="display:block" alt="" aria-hidden="true">
+                <span aria-label="<%= gossip.comments.size %> commentaire<%= gossip.comments.size != 1 ? 's' : '' %>"><%= gossip.comments.size %></span>
+              </span>
+              <span class="d-flex align-items-center gap-1 text-muted small">
+                <% if user_signed_in? %>
+                  <% user_like = gossip.likes.find_by(user: current_user) %>
+                  <% if user_like %>
+                    <%= button_to like_path(user_like), method: :delete, form: { class: "d-flex align-items-center" }, class: "btn btn-link p-0 border-0 d-flex align-items-center", aria: { label: "Retirer j'aime de #{gossip.title}" } do %>
+                      <img src="/like.svg" width="15" height="15" style="display:block" alt="">
+                    <% end %>
+                  <% else %>
+                    <%= button_to likes_path(likeable_type: "Gossip", likeable_id: gossip.id), method: :post, form: { class: "d-flex align-items-center" }, class: "btn btn-link p-0 border-0 d-flex align-items-center", aria: { label: "J'aime #{gossip.title}" } do %>
+                      <img src="/like.svg" width="15" height="15" style="display:block;opacity:0.45" alt="">
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  <img src="/like.svg" width="15" height="15" style="display:block;opacity:0.45" alt="" aria-hidden="true">
+                <% end %>
+                <span aria-label="<%= gossip.likes.size %> j'aime"><%= gossip.likes.size %></span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

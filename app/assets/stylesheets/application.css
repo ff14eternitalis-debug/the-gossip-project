@@ -228,3 +228,68 @@
   60%, 65%  { transform: translate(15px); }
   80%, 85%  { transform: translate(10px); }
 }
+
+/* ── Autocomplete destinataires ── */
+.autocomplete-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #1a2035;
+  border: 1px solid #00bdf2;
+  border-radius: 8px;
+  z-index: 1050;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 189, 242, 0.15);
+}
+
+.autocomplete-item {
+  padding: 9px 14px;
+  cursor: pointer;
+  color: #e0e6f0;
+  font-size: 0.9rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.autocomplete-item:first-child { border-radius: 8px 8px 0 0; }
+.autocomplete-item:last-child  { border-radius: 0 0 8px 8px; }
+
+.autocomplete-item:hover {
+  background: #00bdf2;
+  color: #0a0b1e;
+}
+
+.autocomplete-empty {
+  padding: 10px 14px;
+  color: #6c757d;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.autocomplete-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #00bdf2;
+  color: #0a0b1e;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.autocomplete-chip-remove {
+  background: none;
+  border: none;
+  color: #0a0b1e;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.autocomplete-chip-remove:hover {
+  opacity: 1;
+}

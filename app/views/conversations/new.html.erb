@@ -13,9 +13,24 @@
 
   <%= form_with model: @message, url: conversations_path, local: true, class: "mt-4" do |f| %>
     <div class="mb-3">
-      <%= f.label :recipient_ids, "Destinataire(s)", class: "form-label" %>
-      <%= f.collection_select :recipient_ids, @users, :id, :first_name, { selected: @recipient&.id }, { class: "form-select", multiple: true } %>
-      <div class="form-text">Maintenez Ctrl (ou Cmd) pour selectionner plusieurs destinataires.</div>
+      <label class="form-label" for="recipient_search">Destinataire(s)</label>
+      <div data-controller="autocomplete"
+           data-autocomplete-users-value="<%= @users.map { |u| { id: u.id, first_name: u.first_name, last_name: u.last_name.to_s } }.to_json %>"
+           data-autocomplete-preselected-value="<%= @recipient ? { id: @recipient.id.to_s, name: "#{@recipient.first_name} #{@recipient.last_name}" }.to_json : "{}" %>"
+           style="max-width: 400px; position: relative;">
+        <div data-autocomplete-target="selected" class="d-flex flex-wrap gap-1 mb-1" aria-live="polite"></div>
+        <input type="text"
+               id="recipient_search"
+               data-autocomplete-target="input"
+               data-action="input->autocomplete#search focus->autocomplete#search"
+               class="form-control"
+               placeholder="Rechercher un ami..."
+               autocomplete="off"
+               aria-autocomplete="list"
+               aria-haspopup="listbox">
+        <div data-autocomplete-target="dropdown" class="autocomplete-dropdown d-none"></div>
+        <div data-autocomplete-target="hiddenInputs"></div>
+      </div>
     </div>
 
     <div class="mb-3">
@@ -23,8 +38,13 @@
       <%= f.text_area :content, class: "form-control", rows: 5 %>
     </div>
 
-    <button type="submit" class="btn btn-primary">
-      <img src="/send.svg" width="16" height="16" class="me-1"> Envoyer
+    <button type="submit" class="button button--primary button--take-off">
+      <span class="icon">
+        <div class="svg-wrapper">
+          <img src="/send.svg" width="20" height="20" alt="">
+        </div>
+      </span>
+      <span>Envoyer</span>
     </button>
     <%= link_to "Annuler", conversations_path, class: "btn btn-outline-secondary ms-2" %>
   <% end %>

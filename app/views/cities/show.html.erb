@@ -13,24 +13,24 @@
               <h5 class="card-title"><%= gossip.title %></h5>
               <p class="card-text text-muted">Par <%= gossip.user.first_name %></p>
               <p class="card-text small text-muted">
-                <img src="/like.svg" width="14" height="14" class="me-1">
+                <img src="/like.svg" width="14" height="14" class="me-1" alt="" aria-hidden="true">
                 <%= gossip.likes.size %> like<%= "s" if gossip.likes.size != 1 %>
                 <% if user_signed_in? %>
                   <% user_like = gossip.likes.find_by(user: current_user) %>
                   <% if user_like %>
-                    <%= button_to like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" do %>
-                      <img src="/like.svg" width="14" height="14"> Unlike
+                    <%= button_to like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline", aria: { label: "Retirer j'aime de #{gossip.title}" } do %>
+                      <img src="/like.svg" width="14" height="14" alt=""> Unlike
                     <% end %>
                   <% else %>
-                    <%= button_to likes_path(likeable_type: "Gossip", likeable_id: gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline" do %>
-                      <img src="/like.svg" width="14" height="14"> Like
+                    <%= button_to likes_path(likeable_type: "Gossip", likeable_id: gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-link btn-sm p-0 align-baseline", aria: { label: "J'aime #{gossip.title}" } do %>
+                      <img src="/like.svg" width="14" height="14" alt=""> Like
                     <% end %>
                   <% end %>
                 <% end %>
               </p>
             </div>
             <div class="card-footer">
-              <%= link_to "Voir plus", gossip_path(gossip), class: "btn btn-primary btn-sm" %>
+              <%= link_to gossip_path(gossip), class: "btn btn-primary btn-sm", aria: { label: "Voir plus : #{gossip.title}" } do %>Voir plus<% end %>
             </div>
           </div>
         </div>

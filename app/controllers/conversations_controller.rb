@@ -17,7 +17,7 @@ class ConversationsController < ApplicationController
   def new
     @message = PrivateMessage.new
     @recipient = User.find_by(id: params[:recipient_id])
-    @users = User.where.not(id: current_user.id).order(:first_name)
+    @users = following_or_all_users
   end
 
   def create
@@ -26,7 +26,7 @@ class ConversationsController < ApplicationController
     if @message.save
       redirect_to conversation_path(@message), notice: "Message envoye."
     else
-      @users = User.where.not(id: current_user.id).order(:first_name)
+      @users = following_or_all_users
       render :new, status: :unprocessable_entity
     end
   end
@@ -41,5 +41,10 @@ class ConversationsController < ApplicationController
 
   def message_params
     params.require(:private_message).permit(:content, recipient_ids: [])
+  end
+
+  def following_or_all_users
+    friends = current_user.following.order(:first_name)
+    friends.any? ? friends : User.where.not(id: current_user.id).order(:first_name)
   end
 end
