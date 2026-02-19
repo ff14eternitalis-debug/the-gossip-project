@@ -2,6 +2,25 @@
 
 Toutes les modifications notables du projet sont documentees dans ce fichier.
 
+## [1.3.0] - 2026-02-19
+
+### Ajoute
+
+- **Systeme de cookies "Se souvenir de moi"** : implementation complete via le module Devise `:rememberable` (deja present) :
+  - **Connexion** : checkbox "Se souvenir de moi" deja presente sur le formulaire (`sessions/new`) — fonctionnelle avec le cookie Devise
+  - **Inscription** : checkbox "Se souvenir de moi" ajoutee au formulaire `registrations/new` ; si cochee, `remember_me!` est appele apres la creation du compte via la surcharge de l'action `create` dans `Users::RegistrationsController`
+  - **Duree du cookie** : `config.remember_for = 2.weeks` dans `devise.rb` — le cookie expire automatiquement apres 2 semaines
+  - **Deconnexion** : `config.expire_all_remember_me_on_sign_out = true` (deja present) — le cookie est supprime a la deconnexion
+
+### Corrige
+
+- **Tests CI — `GossipsControllerTest`** : `sign_in @alice` ajoute aux tests `show displays gossip` et `show returns 404 for unknown gossip` (l'action `show` requiert desormais une authentification)
+- **Tests CI — `GossipsTest` (system)** : `click_on "Create Gossip"` remplace par `click_on "Publier"` pour correspondre au libelle reel du bouton de soumission
+
+### Modifie
+
+- **`configure_permitted_parameters`** : `:remember_me` ajoute aux params autorises pour `:sign_up` dans `ApplicationController`
+
 ## [1.2.0] - 2026-02-19
 
 ### Ajoute

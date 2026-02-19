@@ -1,4 +1,12 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  def create
+    super do |resource|
+      if resource.persisted? && params.dig(:user, :remember_me) == "1"
+        resource.remember_me!
+      end
+    end
+  end
+
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
 

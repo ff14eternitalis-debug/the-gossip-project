@@ -13,6 +13,7 @@ class GossipsTest < ApplicationSystemTestCase
   end
 
   test "viewing a gossip" do
+    sign_in @alice
     visit root_url
     click_on "Voir plus", match: :first
     assert_selector "h1"
