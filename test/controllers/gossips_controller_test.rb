@@ -17,11 +17,13 @@ class GossipsControllerTest < ActionDispatch::IntegrationTest
 
   # --- Show ---
   test "show displays gossip" do
+    sign_in @alice
     get gossip_url(@gossip)
     assert_response :success
   end
 
   test "show returns 404 for unknown gossip" do
+    sign_in @alice
     get gossip_url(id: 999_999)
     assert_response :not_found
   end

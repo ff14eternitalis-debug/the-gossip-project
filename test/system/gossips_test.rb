@@ -24,7 +24,7 @@ class GossipsTest < ApplicationSystemTestCase
 
     fill_in "Titre (3 à 14 caractères)", with: "MyGossip"
     fill_in "Contenu", with: "This is a test gossip content."
-    click_on "Create Gossip"
+    click_on "Publier"
 
     assert_text "Potin créé avec succès"
   end
