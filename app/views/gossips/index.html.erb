@@ -36,7 +36,7 @@
             <%= link_to gossip_path(gossip), class: "btn btn-primary btn-sm", aria: { label: "Voir plus : #{gossip.title}" } do %>Voir plus<% end %>
             <div class="d-flex align-items-center gap-3" style="line-height:1">
               <span class="d-flex align-items-center gap-1 text-muted small">
-                <img src="/comment.svg" width="15" height="15" style="display:block" alt="" aria-hidden="true">
+                <img src="/icons/comment.svg" width="15" height="15" style="display:block" alt="" aria-hidden="true">
                 <span aria-label="<%= gossip.comments.size %> commentaire<%= gossip.comments.size != 1 ? 's' : '' %>"><%= gossip.comments.size %></span>
               </span>
               <span class="d-flex align-items-center gap-1 text-muted small">
@@ -44,15 +44,15 @@
                   <% user_like = gossip.likes.find_by(user: current_user) %>
                   <% if user_like %>
                     <%= button_to like_path(user_like), method: :delete, form: { class: "d-flex align-items-center" }, class: "btn btn-link p-0 border-0 d-flex align-items-center", aria: { label: "Retirer j'aime de #{gossip.title}" } do %>
-                      <img src="/like.svg" width="15" height="15" style="display:block" alt="">
+                      <img src="/icons/like.svg" width="15" height="15" style="display:block" alt="">
                     <% end %>
                   <% else %>
                     <%= button_to likes_path(likeable_type: "Gossip", likeable_id: gossip.id), method: :post, form: { class: "d-flex align-items-center" }, class: "btn btn-link p-0 border-0 d-flex align-items-center", aria: { label: "J'aime #{gossip.title}" } do %>
-                      <img src="/like.svg" width="15" height="15" style="display:block;opacity:0.45" alt="">
+                      <img src="/icons/like.svg" width="15" height="15" style="display:block;opacity:0.45" alt="">
                     <% end %>
                   <% end %>
                 <% else %>
-                  <img src="/like.svg" width="15" height="15" style="display:block;opacity:0.45" alt="" aria-hidden="true">
+                  <img src="/icons/like.svg" width="15" height="15" style="display:block;opacity:0.45" alt="" aria-hidden="true">
                 <% end %>
                 <span aria-label="<%= gossip.likes.size %> j'aime"><%= gossip.likes.size %></span>
               </span>

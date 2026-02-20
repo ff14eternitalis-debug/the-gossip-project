@@ -1,30 +1,31 @@
-# Contributeurs
+# Contributors
 
-Personnes ayant contribué au projet (ordre alphabétique du prénom).
+People who have contributed to the project (alphabetical order by first name).
 
 ---
 
 ## [Morgan](https://github.com/DevRedious)
 
-- Phase 1 (fondations) : validations modèles, `rescue_from` 404, flash messages Bootstrap
-- Phase 2 (authentification) : Devise (inscription, connexion, déconnexion), vues Bootstrap, navbar conditionnelle
-- Phase 3 (CRUD gossips) : new, create, edit, update, destroy ; page ville ; liens ville (user, gossip)
-- Phase 4 (commentaires) : liste, creation sur page gossip, edit/destroy (auteur), compteur sur index
-- Phase 5 (tags et likes) : tags en creation/edition potin, page tag, like/unlike gossips et commentaires, compteurs
-- Documentation technique (`docs/DOCUMENTATION.md`)
-- Correspondance Semaine 4 THP (`docs/CORRESPONDANCE_SEMAINE_04_THP.md`), plan de phase correctifs (`docs/PLAN_PHASE_CORRECTIFS_SEMAINE_04.md`) et visuel concordance (`docs/concordance-thp-graphite.svg`)
-- Documentation curseur personnalise (`docs/CURSEUR_PERSONNALISE_CURSOR_GOSSIP.md`)
-- `CONTRIBUTING.md` et `CONTRIBUTORS.md`
-- `CHANGELOG.md` et règle Cursor (`.cursor/rules/changelog.mdc`)
-- Mise à jour du README (documentation, auteurs, badges CI/Dependabot)
-- Dockerfile et CI (GitHub Actions)
+- Phase 1 (foundations): model validations, `rescue_from` 404, Bootstrap flash messages
+- Phase 2 (authentication): Devise (sign up, sign in, sign out), Bootstrap views, conditional navbar
+- Phase 3 (CRUD gossips): new, create, edit, update, destroy; city page; city links (user, gossip)
+- Phase 4 (comments): list, creation on gossip page, edit/destroy (author only), count on index
+- Phase 5 (tags and likes): tags on gossip create/edit, tag page, like/unlike gossips and comments, counters
+- Technical documentation (`docs/DOCUMENTATION.md`)
+- Week 4 THP correspondence (`docs/CORRESPONDANCE_SEMAINE_04_THP.md`), corrective phase plan (`docs/PLAN_PHASE_CORRECTIFS_SEMAINE_04.md`), and concordance visual (`docs/concordance-thp-graphite.svg`)
+- Custom cursor documentation (`docs/CURSEUR_PERSONNALISE_CURSOR_GOSSIP.md`)
+- README overhaul + `docs/ARCHITECTURE.md`, `docs/ROUTES.md`
+- `CONTRIBUTING.md` and `CONTRIBUTORS.md`
+- `CHANGELOG.md` and Cursor rule (`.cursor/rules/changelog.mdc`)
+- README updates (documentation, authors, CI/Dependabot badges)
+- Dockerfile and CI (GitHub Actions)
 
 ---
 
 ## [Romain](https://github.com/ff14eternitalis-debug)
 
-- Initialisation du projet (first commit)
-- Schéma BDD (Excalidraw)
-- `.gitignore` et nettoyage des fichiers sensibles
-- Corrections et mises à jour (README, erreurs)
-- Rédaction de `docs/SUGGESTIONS.md`
+- Project setup (first commit)
+- Database schema (Excalidraw)
+- `.gitignore` and cleanup of sensitive files
+- Fixes and updates (README, errors)
+- `docs/SUGGESTIONS.md`

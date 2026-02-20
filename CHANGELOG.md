@@ -7,7 +7,9 @@ Toutes les modifications notables du projet sont documentees dans ce fichier.
 ### Ajoute
 
 - **Documentation correspondance Semaine 4 THP** : `docs/CORRESPONDANCE_SEMAINE_04_THP.md` — analyse point par point et jour par jour (Jour 1 à 5) vs programme THP, plus section bonus hors THP
-- **Documentation curseur personnalise** : `docs/CURSEUR_PERSONNALISE_CURSOR_GOSSIP.md` — guide en 5 phases pour utiliser `public/cursor_gossip.svg` comme curseur souris sur le site (sans code, doc uniquement)
+- **docs/ARCHITECTURE.md** : schéma BDD (ERD, tables, relations, associations Rails), concepts techniques (ActiveRecord, Active Storage, Hotwire, API, perf, notifications)
+- **docs/ROUTES.md** : table complète des routes web et API, exemples curl
+- **Documentation curseur personnalise** : `docs/CURSEUR_PERSONNALISE_CURSOR_GOSSIP.md` — guide en 5 phases pour utiliser `public/icons/cursor_gossip.svg` comme curseur souris sur le site (sans code, doc uniquement)
 - **Plan de phase correctifs Semaine 4 THP** : `docs/PLAN_PHASE_CORRECTIFS_SEMAINE_04.md` — plan de phase pour correctifs d’alignement (form_tag, Turbo, Devise) avec verification de non-regression
 - **Visuel concordance THP** : `docs/concordance-thp-graphite.svg` — barre de progression graphite (95 %) integree a la section Concordance de `docs/CORRESPONDANCE_SEMAINE_04_THP.md`
 - **Systeme de cookies "Se souvenir de moi"** : implementation complete via le module Devise `:rememberable` (deja present) :
@@ -23,6 +25,8 @@ Toutes les modifications notables du projet sont documentees dans ce fichier.
 
 ### Modifie
 
+- **README** : allégé et restructuré (tableau Features, résumés DB/Routes avec liens vers docs) ; contenu détaillé (ERD complet, tables, concepts, routes, API) déplacé vers `docs/ARCHITECTURE.md` et `docs/ROUTES.md` pour un README plus pro, clair et scannable
+- **Organisation de `public/`** : icônes et SVG déplacés dans `public/icons/` (cursor_gossip, icon, favicon, like, comment, send, follow, follower, validate_follow, new_comment, icon.md, the-gossip-project.svg) ; pages d’erreur et `robots.txt` restent à la racine ; chemins mis à jour dans les vues, le layout, le manifest PWA, la doc curseur et le README
 - **`configure_permitted_parameters`** : `:remember_me` ajoute aux params autorises pour `:sign_up` dans `ApplicationController`
 
 ## [1.2.0] - 2026-02-19

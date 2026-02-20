@@ -39,11 +39,11 @@
         <% user_like = @gossip.likes.find_by(user: current_user) %>
         <% if user_like %>
           <%= button_to like_path(user_like), method: :delete, form: { class: "d-inline" }, class: "btn btn-primary btn-sm d-inline-flex align-items-center gap-2", aria: { label: "Retirer j'aime" } do %>
-            <img src="/like.svg" width="16" height="16" style="display:block" alt=""> J'aime
+            <img src="/icons/like.svg" width="16" height="16" style="display:block" alt=""> J'aime
           <% end %>
         <% else %>
           <%= button_to likes_path(likeable_type: "Gossip", likeable_id: @gossip.id), method: :post, form: { class: "d-inline" }, class: "btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2", aria: { label: "J'aime ce potin" } do %>
-            <img src="/like.svg" width="16" height="16" style="display:block;opacity:0.7" alt=""> J'aime
+            <img src="/icons/like.svg" width="16" height="16" style="display:block;opacity:0.7" alt=""> J'aime
           <% end %>
         <% end %>
         <span class="text-muted small" aria-label="<%= @gossip.likes.size %> j'aime"><%= @gossip.likes.size %></span>
@@ -53,15 +53,15 @@
                 class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2 ms-2"
                 data-bs-toggle="modal" data-bs-target="#commentModal"
                 aria-label="Ajouter un commentaire">
-          <img src="/comment.svg" width="16" height="16" style="display:block" alt=""> Commenter
+          <img src="/icons/comment.svg" width="16" height="16" style="display:block" alt=""> Commenter
         </button>
         <span class="text-muted small" aria-label="<%= @gossip.comments.size %> commentaire<%= @gossip.comments.size != 1 ? 's' : '' %>"><%= @gossip.comments.size %></span>
       <% else %>
         <span class="d-inline-flex align-items-center gap-2 text-muted small">
-          <img src="/like.svg" width="16" height="16" style="display:block;opacity:0.5" alt="" aria-hidden="true"> <%= @gossip.likes.size %>
+          <img src="/icons/like.svg" width="16" height="16" style="display:block;opacity:0.5" alt="" aria-hidden="true"> <%= @gossip.likes.size %>
         </span>
         <span class="d-inline-flex align-items-center gap-2 text-muted small ms-2">
-          <img src="/comment.svg" width="16" height="16" style="display:block;opacity:0.5" alt="" aria-hidden="true"> <%= @gossip.comments.size %>
+          <img src="/icons/comment.svg" width="16" height="16" style="display:block;opacity:0.5" alt="" aria-hidden="true"> <%= @gossip.comments.size %>
         </span>
       <% end %>
     </div>
@@ -124,7 +124,7 @@
                 style: "background:#0a0b1e; color:#e0e6f0; border-color:#444;" %>
             <div class="mt-3 d-flex gap-2">
               <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2">
-                <img src="/send.svg" width="16" height="16" style="display:block" alt=""> Publier
+                <img src="/icons/send.svg" width="16" height="16" style="display:block" alt=""> Publier
               </button>
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
             </div>
